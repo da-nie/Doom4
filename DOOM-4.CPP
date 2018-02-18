@@ -150,7 +150,7 @@ void main(void)
  InitGame();
  PutSprite(0,0,Data.Menu,0,0);
  PutSprite(0,0,Data.Menu,0,2);
- Video.PrintToScreen(0,192,"      WRITTEN BY DMITRIY TRUNOW 23.03.2002");
+ Video.PrintToScreen(0,192," DMITRIY TRUNOW 23.03.2002 MODIFY 18.06.2005");
  Menu();
  Video.CloseVga();
  OldTimer();

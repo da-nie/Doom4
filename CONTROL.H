@@ -2,12 +2,13 @@
 int Timer;
 //============================================================================
 int Impact(float x,float y,float z,int radius,int height,int objno);
+int ImpactAll(float x,float y,float z,int radius,int height,int objno,int **collizionarray,int *collizionamount);
 int Intersection(float xa1,float ya1,float xa2,float ya2,float xb1,float yb1,float xb2,float yb2,float* xo,float* yo);
 void ImpactPlayerToThing(float x,float y,float z,int radius,int height);
 int CheckTouchLine(int xb,int yb,int x1,int y1,int z1,int x2,int y2,int z2,float dz,int height,int man,float* xo,float* yo,int *object);
 int CheckWay(float x1,float y1,float z1,float x2,float y2,float z2,int radius,int height,int man,float* xo,float *yo,int *object);
 int ImpactPlayerToWall(float x,float y,float z);
-void SlideTraverse(float xw1,float yw1,float xw2,float yw2,float xp1,float yp1,float xp2,float yp2);
+void SlideTraverse(float xp1,float yp1,float xp2,float yp2);
 void InitPlayer(void);
 int DistanceOfVector(float xa,float ya,float xb,float yb);
 void AnimateDoor(int k);
@@ -185,6 +186,157 @@ int Impact(float x,float y,float z,int radius,int height,int objno)//z-верх объе
   }
  return(0);
 }
+int ImpactAll(float x,float y,float z,int radius,int height,int objno,int **collizionarray,int *collizionamount)
+{
+ int collizion_amount=0;
+ int *collizion_array=(int*)malloc(sizeof(int));
+ int top=z;
+ int bottom=z-height;
+ int xb1=x/128-1;//соседние блоки
+ int yb1=y/128-1;
+ int xb2=x/128+1;
+ int yb2=y/128+1;
+ if (xb1<0) xb1=0;//если вышли за границу поля
+ if (yb1<0) yb1=0;
+ if (xb2>99) xb2=99;
+ if (yb2>99) yb2=99;
+ int n,m,u,l,k;
+ for(n=xb1;n<=xb2;n++)
+  for(m=yb1;m<=yb2;m++)
+   {
+    u=Maze.BlockMap[m][n][0];
+    for(l=1;l<=u;l++)
+     {
+      k=Maze.BlockMap[m][n][l];
+      float xw1=Segment[k].X1-x;//координаты стен
+      float xw2=Segment[k].X2-x;
+      float yw1=Segment[k].Y1-y;
+      float yw2=Segment[k].Y2-y;
+      float a=xw2-xw1;
+      float b=yw2-yw1;
+      float kd=a*a+b*b;
+      float ld=2*a*xw1+2*b*yw1;
+      float md=xw1*xw1+yw1*yw1-radius*radius;
+      float d=ld*ld-4*kd*md;//дескриминант
+      if (d<0) continue;//нет пересечения
+      float sd=sqrt(d);
+      float l1=(-ld+sd)/(2*kd);
+      float l2=(-ld-sd)/(2*kd);
+      float xp1=xw1+l1*a;//2 точки пересечения
+      float yp1=yw1+l1*b;
+      float xp2=xw1+l2*a;
+      float yp2=yw1+l2*b;
+      if (((xp1>=xw1 && xp1<=xw2) || (xp1>=xw2 && xp1<=xw1)) &&
+          ((yp1>=yw1 && yp1<=yw2) || (yp1>=yw2 && yp1<=yw1)))
+           {
+            if (Segment[k].Frontier!=0)//линия раздела
+             {
+              //проверим по высоте
+              int down1=Sector[Segment[k].Sector1].Down-32;
+              int up1=Sector[Segment[k].Sector1].Up;
+              int down2=Sector[Segment[k].Sector2].Down-32;
+              int up2=Sector[Segment[k].Sector2].Up;
+              if (!(up1>=top && bottom>=down1) || up2-down2<=height ||
+                  !(up2>=top && bottom>=down2) || up1-down1<=height)
+                   {
+                    collizion_array=(int *)realloc(collizion_array,sizeof(int)*(collizion_amount+1));
+                    collizion_array[collizion_amount]=k;
+                    collizion_amount++;
+                   }
+             }
+            else
+             {
+              collizion_array=(int *)realloc(collizion_array,sizeof(int)*(collizion_amount+1));
+              collizion_array[collizion_amount]=k;
+              collizion_amount++;
+             }
+           }
+      if (((xp2>=xw1 && xp2<=xw2) || (xp2>=xw2 && xp2<=xw1)) &&
+          ((yp2>=yw1 && yp2<=yw2) || (yp2>=yw2 && yp2<=yw1)))
+           {
+            if (Segment[k].Frontier!=0)//линия раздела
+             {
+              //проверим по высоте
+              int down1=Sector[Segment[k].Sector1].Down-32;
+              int up1=Sector[Segment[k].Sector1].Up;
+              int down2=Sector[Segment[k].Sector2].Down-32;
+              int up2=Sector[Segment[k].Sector2].Up;
+              if (!(up1>top && bottom>=down1) || up2-down2<=height ||
+                  !(up2>top && bottom>=down2) || up1-down1<=height)
+                   {
+                    collizion_array=(int *)realloc(collizion_array,sizeof(int)*(collizion_amount+1));
+                    collizion_array[collizion_amount]=k;
+                    collizion_amount++;
+                   }
+             }
+            else
+             {
+              collizion_array=(int *)realloc(collizion_array,sizeof(int)*(collizion_amount+1));
+              collizion_array[collizion_amount]=k;
+              collizion_amount++;
+             }
+           }
+     }
+   }
+ if (collizion_amount>0)
+  {
+   *collizionamount=collizion_amount;
+   *collizionarray=collizion_array;
+   return(1);
+  }
+ for(n=0;n<NowThing;n++)
+  {
+   if (Thing[n]->Coord.Z<bottom || Thing[n]->Coord.Z-Thing[n]->Coord.Height>top) continue;
+   int x1=Thing[n]->Coord.X-x;
+   int y1=Thing[n]->Coord.Y-y;
+   int len=sqrt(x1*x1+y1*y1);
+   if (len<Thing[n]->Coord.Radius+radius)
+    {
+     if (Thing[n]->Obstruction!=0)
+      {
+       *collizionamount=collizion_amount;
+       *collizionarray=collizion_array;
+       return(-1);//объект является препятствием
+      }
+    }
+  }
+ //проверим столкновение с врагами
+ for(n=0;n<NowAlien;n++)
+  {
+   if (n==objno) continue;
+   if (Alien[n]->Life==0) continue;
+   if (Alien[n]->Coord.Z<bottom || Alien[n]->Coord.Z-Alien[n]->Coord.Height>top) continue;
+   int x1=Alien[n]->Coord.X-x;
+   int y1=Alien[n]->Coord.Y-y;
+   int len=sqrt(x1*x1+y1*y1);
+   if (len<Alien[n]->Coord.Radius+radius)
+    {
+     *collizionamount=collizion_amount;
+     *collizionarray=collizion_array;
+     return(-1);
+    }
+  }
+ if (objno!=-1)//для врагов проверим столкновение с игроком
+  {
+   if (Alien[objno]->Life!=0 &&
+      !(Alien[objno]->Coord.Z<Player.Z-64 || Alien[objno]->Coord.Z-Alien[objno]->Coord.Height>Player.Z-Player.SitZ))
+     {
+      int x1=Alien[objno]->Coord.X-Player.X;
+      int y1=Alien[objno]->Coord.Y-Player.Y;
+      int len=sqrt(x1*x1+y1*y1);
+      if (len<Alien[objno]->Coord.Radius+20)
+      {
+       *collizionamount=collizion_amount;
+       *collizionarray=collizion_array;
+       return(-1);
+      }
+     }
+  }
+ *collizionamount=collizion_amount;
+ *collizionarray=collizion_array;
+ return(0);
+}
+
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 //Возвращает в xo,yo точку пересечения двух прямых. Если пересечения//
 //не было, то возвращает 0.                                         //
@@ -766,39 +918,73 @@ int CheckWay(float x1,float y1,float z1,float x2,float y2,float z2,int radius,in
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 //Обеспечивает скольжение игрока вдоль стены.                       //
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
-void SlideTraverse(float xw1,float yw1,float xw2,float yw2,float xp1,float yp1,float xp2,float yp2)
+void SlideTraverse(float xp1,float yp1,float xp2,float yp2)
 {
- float vx=xw2-xw1;
- float vy=yw2-yw1;
- float ux=xp2-xp1;
- float uy=yp2-yp1;
- float normav=sqrt(vx*vx+vy*vy);
- float normau=sqrt(ux*ux+uy*uy);
- vx=vx/normav;
- vy=vy/normav;
- if (normau!=0)
+ //формируем вектор скольжения
+ int *Collizion_Array;
+ int Collizion_Amount;
+ if (ImpactAll(Player.X,Player.Y,Player.Z-Player.SitZ,20,64-Player.SitZ,-1,&Collizion_Array,&Collizion_Amount)<0)
+ {
+  Player.X=xp1;
+  Player.Y=yp1;
+  free(Collizion_Array);
+  return;
+ }
+ Player.X=xp1;
+ Player.Y=yp1;
+ //если же пересечение со стенами есть
+ float x=xp1;
+ float y=yp1;
+ float dx=xp2-xp1;
+ float dy=yp2-yp1;
+ float Dx=0;
+ float Dy=0;
+ for(int n=0;n<10;n++)
+ for(int m=0;m<Collizion_Amount;m++)
   {
-   ux=ux/normau;
-   uy=uy/normau;
+   int line=Collizion_Array[m];
+   float xw1=Segment[line].X1;
+   float yw1=Segment[line].Y1;
+   float xw2=Segment[line].X2;
+   float yw2=Segment[line].Y2;
+   float vx=xw2-xw1;
+   float vy=yw2-yw1;
+   float ux=dx;
+   float uy=dy;
+   float normav=(float)(sqrt(vx*vx+vy*vy));
+   float normau=(float)(sqrt(ux*ux+uy*uy));
+   vx=vx/normav;
+   vy=vy/normav;
+   if (normau!=0)
+    {
+     ux=ux/normau;
+     uy=uy/normau;
+    }
+   float cosa=ux*vx+uy*vy;
+   float modul=(float)(fabs(cosa));
+   if (cosa>0)
+    {
+     Dx=vx*modul;
+     Dy=vy*modul;
+    }
+   else
+    {
+     Dx=-vx*modul;
+     Dy=-vy*modul;
+    }
+    Dx=Dx/Collizion_Amount;
+    Dy=Dy/Collizion_Amount;
+    //проверим, не пересекаем ли мы что-нибудь снова
+    if (Impact(x+Dx,y+Dy,Player.Z-Player.SitZ,20,64-Player.SitZ,-1)!=0)
+     {
+      Dx=0;
+      Dy=0;
+     }
+    x=x+Dx;
+    y=y+Dy;
   }
- float cosa=ux*vx+uy*vy;//косинус угла между векторами
- float modul=fabs(cosa)*10;
- if (cosa>0)
-  {
-   Player.X=xp1+vx*modul;
-   Player.Y=yp1+vy*modul;
-  }
- else
-  {
-   Player.X=xp1-vx*modul;
-   Player.Y=yp1-vy*modul;
-  }
- int result=Impact(Player.X,Player.Y,Player.Z-Player.SitZ,20,64-Player.SitZ,-1);
- if (result!=0)
-  {
-   Player.X=xp1;
-   Player.Y=yp1;
-  }
+ Player.X=x;
+ Player.Y=y;
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 //Инициализирует данные игрока                                      //
@@ -1789,12 +1975,14 @@ int KeyboardControl(int sector)
  if (Consol.GetPressKey(SRIGHT)) MoveRight();
  if (Consol.GetPressKey(LEFT))
   {
+   if (Player.D_Angle>0) Player.D_Angle=0;
    Player.D_Angle--;
    if (Player.D_Angle<-5) Player.D_Angle=-5;
    RotateLeft();
   }
  if (Consol.GetPressKey(RIGHT))
   {
+   if (Player.D_Angle<0) Player.D_Angle=0;
    Player.D_Angle++;
    if (Player.D_Angle>5) Player.D_Angle=5;
    RotateRight();
@@ -1807,10 +1995,10 @@ int KeyboardControl(int sector)
   }
  else
   {
-   if (Player.Dz==0) Player.Dz=2;
+   if (Player.Dz==0) Player.Dz=1;
   }
- if (Player.Pz>7) Player.Dz=-Player.Dz;
- if (Player.Pz<-7) Player.Dz=-Player.Dz;
+ if (Player.Pz>3) Player.Dz=-Player.Dz;
+ if (Player.Pz<-3) Player.Dz=-Player.Dz;
  return(0);
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
@@ -1967,30 +2155,25 @@ void MoveUp(int type)
  float y=Player.Y;
  float ss=SinTable[Player.Angle];
  float cs=CosTable[Player.Angle];
- Player.X+=Player.Inerci*ss;
- Player.Y+=Player.Inerci*cs;
- if (Consol.GetPressKey(SPEED))
-  {
-   Player.X+=abs(Player.Inerci)*ss;
-   Player.Y+=abs(Player.Inerci)*cs;
-  }
- int k=Impact(Player.X,Player.Y,Player.Z-Player.SitZ,20,64-Player.SitZ,-1);
- if (k==0) ImpactPlayerToThing(Player.X,Player.Y,Player.Z,20,64);
- if (k<0)
-  {
-   Player.X=x;
-   Player.Y=y;
-  }
- if (k>0)//есть столкновение
-  {
-   k--;
-   int x1=Segment[k].X1;
-   int x2=Segment[k].X2;
-   int y1=Segment[k].Y1;
-   int y2=Segment[k].Y2;
-   SlideTraverse(x1,y1,x2,y2,x,y,Player.X,Player.Y);
-   Player.Inerci=0;
-  }
+ Player.X+=ss*Player.Inerci;
+  Player.Y+=cs*Player.Inerci;
+  if (Consol.GetPressKey(SPEED))
+   {
+    Player.X+=abs(Player.Inerci)*ss;
+    Player.Y+=abs(Player.Inerci)*cs;
+   }
+  int k=Impact(Player.X,Player.Y,Player.Z-Player.SitZ,20,64-Player.SitZ,-1);
+  if (k==0) ImpactPlayerToThing(Player.X,Player.Y,Player.Z,20,64);
+  if (k<0)
+   {
+    Player.X=x;
+    Player.Y=y;
+   }
+  if (k>0)//есть столкновение
+   {
+    SlideTraverse(x,y,Player.X,Player.Y);
+    Player.Inerci=0;
+   }
  Player.Pz+=Player.Dz;
  if (type==0)
   {
@@ -2023,12 +2206,7 @@ void MoveDown(int type)
   }
  if (k>0)//есть столкновение
   {
-   k--;
-   int x1=Segment[k].X1;
-   int x2=Segment[k].X2;
-   int y1=Segment[k].Y1;
-   int y2=Segment[k].Y2;
-   SlideTraverse(x1,y1,x2,y2,x,y,Player.X,Player.Y);
+   SlideTraverse(x,y,Player.X,Player.Y);
    Player.Inerci=0;
   }
  Player.Pz+=Player.Dz;

@@ -80,7 +80,6 @@ void Screen::Clear(void)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 void Screen::ViewWindow(void)
 {
-// while((inp(0x3DA)&0x08)==0);//ждать развёртку
  unsigned char *dpt=Buffer;
  #pragma aux putwindow parm[]=\
  "mov esi,dpt"\
@@ -96,7 +95,6 @@ void Screen::ViewWindow(void)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 void Screen::ViewBar(void)
 {
- //while((inp(0x3DA)&0x08)==0);//ждать развёртку
  unsigned char *dpt=Buffer+53760;
  #pragma aux putbar parm[]=\
  "mov esi,dpt"\
@@ -113,7 +111,6 @@ void Screen::ViewBar(void)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 void Screen::View(void)
 {
-// while((inp(0x3DA)&0x08)==0);//ждать развёртку
  unsigned char *dpt=Buffer;
  #pragma aux putscreen parm[]=\
  "mov esi,dpt"\
