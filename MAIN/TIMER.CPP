@@ -1,11 +1,9 @@
-//===========================================================================
-void StartUpTimer(int freq);
-void SetTimer(unsigned int val);
-void OldTimer(void);
-void (__interrupt __far *tmoldinter)();
+#include "timer.h"
+
 int TimerUser;
 int counsec,secs,mins,hours;
 //===========================================================================
+void (__interrupt __far *tmoldinter)();
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 //Обработчик прерываний таймера.                                    //
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
@@ -66,3 +64,5 @@ void OldTimer(void)
  SetTimer(1193180/(0.24));
  _dos_setvect(8,tmoldinter);
 }
+
+

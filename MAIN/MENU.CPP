@@ -1,22 +1,14 @@
-void Menu(void);
-void GetCursorData(int x,int y,char *d);
-void SetCursorData(int x,int y,char *d);
-int AddString(char *string,char *s,int n);
-void PrintSlot(void);
-void SaveGame(void);
-int LoadingGame(int game);
-void ClearResurs(void);
-void StartGame(void);
-int Select(int x,int y,char *text);
+#include "menu.h"
+
 //============================================================================
 void Menu(void)
 {
  char dpt[400];
- PutSprite(98,3,Data.Menu,1,1);
- PutSprite(97,90,Data.Menu,2,1);
+ PutSprite(98,3,sData.Menu,1,1);
+ PutSprite(97,90,sData.Menu,2,1);
  int y=0;
- GetCursorData(67,16*y+88,dpt);
- PutSprite(67,88+y*16,Data.Menu,3,1);
+ GetCursorsData(67,16*y+88,dpt);
+ PutSprite(67,88+y*16,sData.Menu,3,1);
  int Timer=TimerUser;
  int Faze=0;
  int game=0;//нет игры
@@ -24,44 +16,44 @@ void Menu(void)
   {
    if (Timer/10==TimerUser/10) continue;
    Timer=TimerUser;
-   PutSprite(67,88+y*16,Data.Menu,3+Faze/3,1);
+   PutSprite(67,88+y*16,sData.Menu,3+Faze/3,1);
    Faze++;
    if (Faze>=6) Faze=0;
-   if (Consol.GetPressKey(UP))
+   if (cKeyboard.GetPressKey(UP))
     {
-     SetCursorData(67,16*y+88,dpt);
+     SetCursorsData(67,16*y+88,dpt);
      y--;
      if (y<0) y=4;
-     GetCursorData(67,16*y+88,dpt);
-     PutSprite(67,88+y*16,Data.Menu,3+Faze/3,1);
+     GetCursorsData(67,16*y+88,dpt);
+     PutSprite(67,88+y*16,sData.Menu,3+Faze/3,1);
      KeyTable[UP]=0;
     }
-   if (Consol.GetPressKey(DOWN))
+   if (cKeyboard.GetPressKey(DOWN))
     {
-     SetCursorData(67,16*y+88,dpt);
+     SetCursorsData(67,16*y+88,dpt);
      y++;
      if (y>4) y=0;
-     GetCursorData(67,16*y+88,dpt);
-     PutSprite(67,88+y*16,Data.Menu,3+Faze/3,1);
+     GetCursorsData(67,16*y+88,dpt);
+     PutSprite(67,88+y*16,sData.Menu,3+Faze/3,1);
      KeyTable[DOWN]=0;
     }
-   if (Consol.GetPressKey(ESC) && game==1)//вернёмся к игре
+   if (cKeyboard.GetPressKey(ESC) && game==1)//вернёмся к игре
     {
      KeyTable[ESC]=0;
-     Video.View();
+     cVideo.View();
      int i=Control();
      KeyTable[ESC]=0;
      if (i==1)//вы выиграли
       {
        ClearResurs();
-       Player.Level++;//переходим к следующему уровню
-       int result=LoadGame(Player.Level);
-       Player.X=Info.X;
-       Player.Y=Info.Y;
-       Player.TimeSpacesuit=0;
-       Player.TimeMegaSphere=0;
-       Video.SetRGB_DAC(1,1,1);
-       Player.Angle=0;
+       sPlayer.Level++;//переходим к следующему уровню
+       int result=LoadGame(sPlayer.Level);
+       sPlayer.X=sInfo.X;
+       sPlayer.Y=sInfo.Y;
+       sPlayer.TimeSpacesuit=0;
+       sPlayer.TimeMegaSphere=0;
+       cVideo.SetRGB_DAC(1,1,1);
+       sPlayer.Angle=0;
        if (result!=0) game=0;//вы прошли все уровни
         else
          {
@@ -69,36 +61,36 @@ void Menu(void)
           StartGame();
          }
       }
-     GetCursorData(67,16*y+88,dpt);
-     PutSprite(98,3,Data.Menu,1,1);
-     PutSprite(97,90,Data.Menu,2,1);
-     PutSprite(67,88+y*16,Data.Menu,3,1);
+     GetCursorsData(67,16*y+88,dpt);
+     PutSprite(98,3,sData.Menu,1,1);
+     PutSprite(97,90,sData.Menu,2,1);
+     PutSprite(67,88+y*16,sData.Menu,3,1);
     }
-   if (Consol.GetPressKey(USE))
+   if (cKeyboard.GetPressKey(USE))
     {
      if (y==4)
       {
        if (!Select(20,120,"ARE YOU SURE YOU WANT TO QUIT (Y-N)")) continue;
        if (game!=0) ClearResurs();
-       free(Data.Thing);
-       free(Data.Alien);
-       free(Data.WallTexture1);
-       free(Data.WallTexture2);
-       free(Data.WallTexture3);
-       free(Data.WallTexture4);
-       free(Data.WallTexture5);
-       free(Data.WallTexture6);
-       free(Data.WallTexture7);
-       free(Data.WallTexture8);
-       free(Data.Bar);
-       free(Data.Weapon0);
-       free(Data.Weapon1);
-       free(Data.Weapon2);
-       free(Data.Weapon3);
-       free(Data.Weapon4);
-       free(Data.Fire);
-       free(Data.Font);
-       free(Data.Menu);
+       free(sData.Thing);
+       free(sData.Alien);
+       free(sData.WallTexture1);
+       free(sData.WallTexture2);
+       free(sData.WallTexture3);
+       free(sData.WallTexture4);
+       free(sData.WallTexture5);
+       free(sData.WallTexture6);
+       free(sData.WallTexture7);
+       free(sData.WallTexture8);
+       free(sData.Bar);
+       free(sData.Weapon0);
+       free(sData.Weapon1);
+       free(sData.Weapon2);
+       free(sData.Weapon3);
+       free(sData.Weapon4);
+       free(sData.Fire);
+       free(sData.Font);
+       free(sData.Menu);
        return;
       }
      if (y==3)
@@ -107,13 +99,13 @@ void Menu(void)
        char *vpt=(char *)0xa0000;
        for(int n=0;n<64000;n++) b[n]=*(vpt+n);
        KeyTable[USE]=0;
-       PutSprite(0,0,Data.Menu,5,2);
+       PutSprite(0,0,sData.Menu,5,2);
        RunningScreen();
        while(1)
         {
-         if (Consol.GetPressKey(USE)) break;
+         if (cKeyboard.GetPressKey(USE)) break;
         }
-       for(n=0;n<64000;n++) *(Video.Buffer+n)=b[n];
+       for(int n=0;n<64000;n++) *(cVideo.Buffer+n)=b[n];
        free(b);
        RunningScreen();
        KeyTable[USE]=0;
@@ -125,23 +117,23 @@ void Menu(void)
        LoadGame(1);
        SetThing();
        InitPlayer();
-       Player.X=Info.X;
-       Player.Y=Info.Y;
-       Player.Angle=0;
+       sPlayer.X=sInfo.X;
+       sPlayer.Y=sInfo.Y;
+       sPlayer.Angle=0;
        StartGame();
        int i=Control();
        KeyTable[ESC]=0;
        if (i==1)//вы выиграли
         {
          ClearResurs();
-         Player.Level++;//переходим к следующему уровню
-         int result=LoadGame(Player.Level);
-         Player.X=Info.X;
-         Player.Y=Info.Y;
-         Player.TimeSpacesuit=0;
-         Player.TimeMegaSphere=0;
-         Video.SetRGB_DAC(1,1,1);
-         Player.Angle=0;
+         sPlayer.Level++;//переходим к следующему уровню
+         int result=LoadGame(sPlayer.Level);
+         sPlayer.X=sInfo.X;
+         sPlayer.Y=sInfo.Y;
+         sPlayer.TimeSpacesuit=0;
+         sPlayer.TimeMegaSphere=0;
+         cVideo.SetRGB_DAC(1,1,1);
+         sPlayer.Angle=0;
          if (result!=0) game=0;//вы прошли все уровни
           else
            {
@@ -149,10 +141,10 @@ void Menu(void)
             StartGame();
            }
         }
-       GetCursorData(67,16*y+88,dpt);
-       PutSprite(98,3,Data.Menu,1,1);
-       PutSprite(97,90,Data.Menu,2,1);
-       PutSprite(67,88+y*16,Data.Menu,3,1);
+       GetCursorsData(67,16*y+88,dpt);
+       PutSprite(98,3,sData.Menu,1,1);
+       PutSprite(97,90,sData.Menu,2,1);
+       PutSprite(67,88+y*16,sData.Menu,3,1);
       }
      if (y==2 && game!=0)
       {
@@ -160,7 +152,7 @@ void Menu(void)
        char *vpt=(char *)0xa0000;
        for(int n=0;n<64000;n++) b[n]=*(vpt+n);
        SaveGame();
-       for(n=0;n<64000;n++) *(vpt+n)=b[n];
+       for(int n=0;n<64000;n++) *(vpt+n)=b[n];
        free(b);
        KeyTable[USE]=0;
        KeyTable[ESC]=1;
@@ -171,23 +163,23 @@ void Menu(void)
        char *vpt=(char *)0xa0000;
        for(int n=0;n<64000;n++) b[n]=*(vpt+n);
        int result=LoadingGame(game);
-       for(n=0;n<64000;n++) *(vpt+n)=b[n];
+       for(int n=0;n<64000;n++) *(vpt+n)=b[n];
        free(b);
        if (result!=0)
         {
          game=1;
          StartGame();
-         GetCursorData(67,16*y+88,dpt);
-         PutSprite(98,3,Data.Menu,1,1);
-         PutSprite(97,90,Data.Menu,2,1);
-         PutSprite(67,88+y*16,Data.Menu,3,1);
+         GetCursorsData(67,16*y+88,dpt);
+         PutSprite(98,3,sData.Menu,1,1);
+         PutSprite(97,90,sData.Menu,2,1);
+         PutSprite(67,88+y*16,sData.Menu,3,1);
         }
        KeyTable[USE]=0;
       }
     }
   }
 }
-void GetCursorData(int x,int y,char *d)
+void GetCursorsData(int x,int y,char *d)
 {
  char *vpt=(char *)0xa0000;
  int n,m,offset=0;
@@ -197,7 +189,7 @@ void GetCursorData(int x,int y,char *d)
     *(d+offset)=*(vpt+n+x+(y+m)*320);
    }
 }
-void SetCursorData(int x,int y,char *d)
+void SetCursorsData(int x,int y,char *d)
 {
  char *vpt=(char *)0xa0000;
  int n,m,offset=0;
@@ -261,52 +253,52 @@ void PrintSlot(void)
    len=AddString(string,"-",len);
    itoa(second,s,10);
    len=AddString(string,s,len);
-   Video.PrintToScreen(60,34+16*n,string);
+   cVideo.PrintToCVideo(60,34+16*n,string);
   }
 }
 void SaveGame(void)
 {
  KeyTable[USE]=0;
  char dpt[400];
- for(int n=0;n<10;n++) PutSprite(56,30+n*16,Data.Menu,6,1);
- int y=Player.SavePos;
+ for(int n=0;n<10;n++) PutSprite(56,30+n*16,sData.Menu,6,1);
+ int y=sPlayer.SavePos;
  PrintSlot();
- GetCursorData(30,26+16*y,dpt);
- PutSprite(30,26+y*16,Data.Menu,3,1);
+ GetCursorsData(30,26+16*y,dpt);
+ PutSprite(30,26+y*16,sData.Menu,3,1);
  int Timer=TimerUser;
  int Faze=0;
  while(1)
   {
    if (Timer/10==TimerUser/10) continue;
    Timer=TimerUser;
-   PutSprite(30,26+y*16,Data.Menu,3+Faze/3,1);
+   PutSprite(30,26+y*16,sData.Menu,3+Faze/3,1);
    Faze++;
    if (Faze>=6) Faze=0;
-   if (Consol.GetPressKey(UP))
+   if (cKeyboard.GetPressKey(UP))
     {
-     SetCursorData(30,26+y*16,dpt);
+     SetCursorsData(30,26+y*16,dpt);
      y--;
      if (y<0) y=9;
-     GetCursorData(30,26+y*16,dpt);
-     PutSprite(30,26+y*16,Data.Menu,3+Faze/3,1);
+     GetCursorsData(30,26+y*16,dpt);
+     PutSprite(30,26+y*16,sData.Menu,3+Faze/3,1);
      KeyTable[UP]=0;
     }
-   if (Consol.GetPressKey(DOWN))
+   if (cKeyboard.GetPressKey(DOWN))
     {
-     SetCursorData(30,26+y*16,dpt);
+     SetCursorsData(30,26+y*16,dpt);
      y++;
      if (y>9) y=0;
-     GetCursorData(30,26+y*16,dpt);
-     PutSprite(30,26+y*16,Data.Menu,3+Faze/3,1);
+     GetCursorsData(30,26+y*16,dpt);
+     PutSprite(30,26+y*16,sData.Menu,3+Faze/3,1);
      KeyTable[DOWN]=0;
     }
-   if (Consol.GetPressKey(ESC))
+   if (cKeyboard.GetPressKey(ESC))
     {
      KeyTable[ESC]=0;
-     GetCursorData(30,26+y*16,dpt);
+     GetCursorsData(30,26+y*16,dpt);
      return;
     }
-   if (Consol.GetPressKey(USE))//записываем
+   if (cKeyboard.GetPressKey(USE))//записываем
     {
      FILE *file;
      int n;
@@ -332,120 +324,120 @@ void SaveGame(void)
      SaveInt(file,time.hour);
      SaveInt(file,time.minute);
      SaveInt(file,time.second);
-     SaveInt(file,Player.Level);
+     SaveInt(file,sPlayer.Level);
      //сохраняем данные игрока
-     SaveInt(file,Player.X*100);
-     SaveInt(file,Player.Y*100);
-     SaveInt(file,Player.Z*100);
-     SaveInt(file,Player.P_X);
-     SaveInt(file,Player.P_Y);
-     SaveInt(file,Player.Life);
-     SaveInt(file,Player.Angle);
-     SaveInt(file,Player.Dz*100);
-     SaveInt(file,Player.PV);
-     SaveInt(file,Player.Pz);
-     SaveInt(file,Player.AutoMap);
-     SaveInt(file,Player.D_Angle);
-     SaveInt(file,Player.SitZ);
-     SaveInt(file,Player.RedScreen);
-     SaveInt(file,Player.RedScreenOn);
-     SaveInt(file,Player.TimeSpacesuit);
-     SaveInt(file,Player.TimeMegaSphere);
-     SaveInt(file,Player.IDDQD);
-     SaveInt(file,Player.MessageNo);
-     SaveInt(file,Player.MessageTime);
-     SaveInt(file,Player.Level);
+     SaveInt(file,sPlayer.X*100);
+     SaveInt(file,sPlayer.Y*100);
+     SaveInt(file,sPlayer.Z*100);
+     SaveInt(file,sPlayer.P_X);
+     SaveInt(file,sPlayer.P_Y);
+     SaveInt(file,sPlayer.Life);
+     SaveInt(file,sPlayer.Angle);
+     SaveInt(file,sPlayer.Dz*100);
+     SaveInt(file,sPlayer.PV);
+     SaveInt(file,sPlayer.Pz);
+     SaveInt(file,sPlayer.AutoMap);
+     SaveInt(file,sPlayer.D_Angle);
+     SaveInt(file,sPlayer.SitZ);
+     SaveInt(file,sPlayer.RedScreen);
+     SaveInt(file,sPlayer.RedScreenOn);
+     SaveInt(file,sPlayer.TimeSpacesuit);
+     SaveInt(file,sPlayer.TimeMegaSphere);
+     SaveInt(file,sPlayer.IDDQD);
+     SaveInt(file,sPlayer.MessageNo);
+     SaveInt(file,sPlayer.MessageTime);
+     SaveInt(file,sPlayer.Level);
      //сохраняем параметры оружия
-     SaveInt(file,Weapon.Fire_Faze);
-     SaveInt(file,Weapon.WeaponNo);
-     SaveInt(file,Weapon.Weapon);
-     SaveInt(file,Weapon.Dy);
-     SaveInt(file,Weapon.Vy);
+     SaveInt(file,sWeapon.Fire_Faze);
+     SaveInt(file,sWeapon.WeaponNo);
+     SaveInt(file,sWeapon.Weapon);
+     SaveInt(file,sWeapon.Dy);
+     SaveInt(file,sWeapon.Vy);
      for(n=0;n<10;n++)
       {
-       SaveInt(file,Weapon.Ammo[n]);
-       SaveInt(file,Weapon.MaxAmmo[n]);
-       SaveInt(file,Weapon.Attendance[n]);
-       for(int m=0;m<50;m++) SaveInt(file,Weapon.Faze[n][m]);
+       SaveInt(file,sWeapon.Ammo[n]);
+       SaveInt(file,sWeapon.MaxAmmo[n]);
+       SaveInt(file,sWeapon.Attendance[n]);
+       for(int m=0;m<50;m++) SaveInt(file,sWeapon.Faze[n][m]);
       }
      for(n=0;n<6;n++)
       for(int m=0;m<50;m++)
        {
-        SaveInt(file,Weapon.X[n][m]);
-        SaveInt(file,Weapon.Y[n][m]);
+        SaveInt(file,sWeapon.X[n][m]);
+        SaveInt(file,sWeapon.Y[n][m]);
        }
      //сохраняем параметры сегментов
-     for(n=0;n<Info.SegmentNumber;n++)
+     for(n=0;n<sInfo.SegmentNumber;n++)
       {
-       SaveInt(file,Segment[n].Visible);
-       SaveInt(file,Segment[n].Type);
+       SaveInt(file,sSegment[n].Visible);
+       SaveInt(file,sSegment[n].Type);
       }
      //сохраняем параметры секторов
-     for(n=0;n<Info.SectorNumber;n++)
+     for(n=0;n<sInfo.SectorNumber;n++)
       {
-       SaveInt(file,Sector[n].UpTexture);
-       SaveInt(file,Sector[n].DownTexture);
-       SaveInt(file,Sector[n].Up);
-       SaveInt(file,Sector[n].Down);
-       SaveInt(file,Sector[n].Down1);
-       SaveInt(file,Sector[n].Down2);
-       SaveInt(file,Sector[n].DZ);
-       SaveInt(file,Sector[n].Time);
-       SaveInt(file,Sector[n].Type);
-       SaveInt(file,Sector[n].Sector);
+       SaveInt(file,sSector[n].UpTexture);
+       SaveInt(file,sSector[n].DownTexture);
+       SaveInt(file,sSector[n].Up);
+       SaveInt(file,sSector[n].Down);
+       SaveInt(file,sSector[n].Down1);
+       SaveInt(file,sSector[n].Down2);
+       SaveInt(file,sSector[n].DZ);
+       SaveInt(file,sSector[n].Time);
+       SaveInt(file,sSector[n].Type);
+       SaveInt(file,sSector[n].Sector);
       }
      //сохраняем существующие снаряды
      SaveInt(file,NowMissile);
      for(n=0;n<NowMissile;n++)
       {
-       SaveInt(file,Missile[n]->WeaponNo);
-       SaveInt(file,Missile[n]->X*100);
-       SaveInt(file,Missile[n]->Y*100);
-       SaveInt(file,Missile[n]->Z*100);
-       SaveInt(file,Missile[n]->Dx*100);
-       SaveInt(file,Missile[n]->Dy*100);
-       SaveInt(file,Missile[n]->Dz*100);
-       SaveInt(file,Missile[n]->Speed);
-       SaveInt(file,Missile[n]->Power);
-       SaveInt(file,Missile[n]->Faze);
-       SaveInt(file,Missile[n]->Object);
+       SaveInt(file,cMissile[n]->sWeaponNo);
+       SaveInt(file,cMissile[n]->X*100);
+       SaveInt(file,cMissile[n]->Y*100);
+       SaveInt(file,cMissile[n]->Z*100);
+       SaveInt(file,cMissile[n]->Dx*100);
+       SaveInt(file,cMissile[n]->Dy*100);
+       SaveInt(file,cMissile[n]->Dz*100);
+       SaveInt(file,cMissile[n]->Speed);
+       SaveInt(file,cMissile[n]->Power);
+       SaveInt(file,cMissile[n]->Faze);
+       SaveInt(file,cMissile[n]->Object);
       }
      //сохраняем существующих врагов
      SaveInt(file,NowAlien);
      for(n=0;n<NowAlien;n++)
       {
-       SaveInt(file,Alien[n]->Type);
-       SaveInt(file,Alien[n]->Coord.X*100);
-       SaveInt(file,Alien[n]->Coord.Y*100);
-       SaveInt(file,Alien[n]->Coord.Z*100);
-       SaveInt(file,Alien[n]->Coord.Height);
-       SaveInt(file,Alien[n]->Coord.Radius);
-       SaveInt(file,Alien[n]->Life);
-       SaveInt(file,Alien[n]->Faze);
-       SaveInt(file,Alien[n]->Dx*100);
-       SaveInt(file,Alien[n]->Dy*100);
-       SaveInt(file,Alien[n]->Dz*100);
-       SaveInt(file,Alien[n]->Active);
-       SaveInt(file,Alien[n]->Visible);
-       SaveInt(file,Alien[n]->Angle);
-       SaveInt(file,Alien[n]->Time);
-       SaveInt(file,Alien[n]->Destroy);
+       SaveInt(file,cAlien[n]->Type);
+       SaveInt(file,cAlien[n]->Coord.X*100);
+       SaveInt(file,cAlien[n]->Coord.Y*100);
+       SaveInt(file,cAlien[n]->Coord.Z*100);
+       SaveInt(file,cAlien[n]->Coord.Height);
+       SaveInt(file,cAlien[n]->Coord.Radius);
+       SaveInt(file,cAlien[n]->Life);
+       SaveInt(file,cAlien[n]->Faze);
+       SaveInt(file,cAlien[n]->Dx*100);
+       SaveInt(file,cAlien[n]->Dy*100);
+       SaveInt(file,cAlien[n]->Dz*100);
+       SaveInt(file,cAlien[n]->Active);
+       SaveInt(file,cAlien[n]->Visible);
+       SaveInt(file,cAlien[n]->Angle);
+       SaveInt(file,cAlien[n]->Time);
+       SaveInt(file,cAlien[n]->Destroy);
       }
      //сохраняем существующие предметы
      SaveInt(file,NowThing);
      for(n=0;n<NowThing;n++)
       {
-       SaveInt(file,Thing[n]->ThingNo);
-       SaveInt(file,Thing[n]->Coord.X);
-       SaveInt(file,Thing[n]->Coord.Y);
-       SaveInt(file,Thing[n]->Coord.Z);
-       SaveInt(file,Thing[n]->Faze);
+       SaveInt(file,cThing[n]->ThingNo);
+       SaveInt(file,cThing[n]->Coord.X);
+       SaveInt(file,cThing[n]->Coord.Y);
+       SaveInt(file,cThing[n]->Coord.Z);
+       SaveInt(file,cThing[n]->Faze);
       }
      fclose(file);
-     GetCursorData(30,26+y*16,dpt);
-     Player.MessageNo=15;
-     Player.MessageTime=50;
-     Player.SavePos=y;
+     GetCursorsData(30,26+y*16,dpt);
+     sPlayer.MessageNo=15;
+     sPlayer.MessageTime=50;
+     sPlayer.SavePos=y;
      return;
     }
   }
@@ -454,45 +446,45 @@ int LoadingGame(int game)
 {
  KeyTable[USE]=0;
  char dpt[400];
- for(int n=0;n<10;n++) PutSprite(56,30+n*16,Data.Menu,6,1);
+ for(int n=0;n<10;n++) PutSprite(56,30+n*16,sData.Menu,6,1);
  PrintSlot();
- int y=Player.LoadPos;
- GetCursorData(30,26+16*y,dpt);
- PutSprite(30,26+y*16,Data.Menu,3,1);
+ int y=sPlayer.LoadPos;
+ GetCursorsData(30,26+16*y,dpt);
+ PutSprite(30,26+y*16,sData.Menu,3,1);
  int Timer=TimerUser;
  int Faze=0;
  while(1)
   {
    if (Timer/10==TimerUser/10) continue;
    Timer=TimerUser;
-   PutSprite(30,26+y*16,Data.Menu,3+Faze/3,1);
+   PutSprite(30,26+y*16,sData.Menu,3+Faze/3,1);
    Faze++;
    if (Faze>=6) Faze=0;
-   if (Consol.GetPressKey(UP))
+   if (cKeyboard.GetPressKey(UP))
     {
-     SetCursorData(30,26+y*16,dpt);
+     SetCursorsData(30,26+y*16,dpt);
      y--;
      if (y<0) y=9;
-     GetCursorData(30,26+y*16,dpt);
-     PutSprite(30,26+y*16,Data.Menu,3+Faze/3,1);
+     GetCursorsData(30,26+y*16,dpt);
+     PutSprite(30,26+y*16,sData.Menu,3+Faze/3,1);
      KeyTable[UP]=0;
     }
-   if (Consol.GetPressKey(DOWN))
+   if (cKeyboard.GetPressKey(DOWN))
     {
-     SetCursorData(30,26+y*16,dpt);
+     SetCursorsData(30,26+y*16,dpt);
      y++;
      if (y>9) y=0;
-     GetCursorData(30,26+y*16,dpt);
-     PutSprite(30,26+y*16,Data.Menu,3+Faze/3,1);
+     GetCursorsData(30,26+y*16,dpt);
+     PutSprite(30,26+y*16,sData.Menu,3+Faze/3,1);
      KeyTable[DOWN]=0;
     }
-   if (Consol.GetPressKey(ESC))
+   if (cKeyboard.GetPressKey(ESC))
     {
      KeyTable[ESC]=0;
-     GetCursorData(30,26+y*16,dpt);
+     GetCursorsData(30,26+y*16,dpt);
      return(0);
     }
-   if (Consol.GetPressKey(USE))//загружаем
+   if (cKeyboard.GetPressKey(USE))//загружаем
     {
      FILE *file;
      int n,a;
@@ -525,67 +517,67 @@ int LoadingGame(int game)
      LoadInt(file);
      //восстанавливаем данные игрока
      InitPlayer();
-     Player.X=LoadInt(file)/100;
-     Player.Y=LoadInt(file)/100;
-     Player.Z=LoadInt(file)/100;
-     Player.P_X=LoadInt(file);
-     Player.P_Y=LoadInt(file);
-     Player.Life=LoadInt(file);
-     Player.Angle=LoadInt(file);
-     Player.Dz=LoadInt(file)/100;
-     Player.PV=LoadInt(file);
-     Player.Pz=LoadInt(file);
-     Player.AutoMap=LoadInt(file);
-     Player.D_Angle=LoadInt(file);
-     Player.SitZ=LoadInt(file);
-     Player.RedScreen=LoadInt(file);
-     Player.RedScreenOn=LoadInt(file);
-     Player.TimeSpacesuit=LoadInt(file);
-     Player.TimeMegaSphere=LoadInt(file);
-     Player.IDDQD=LoadInt(file);
-     Player.MessageNo=LoadInt(file);
-     Player.MessageTime=LoadInt(file);
-     Player.Level=LoadInt(file);
+     sPlayer.X=LoadInt(file)/100;
+     sPlayer.Y=LoadInt(file)/100;
+     sPlayer.Z=LoadInt(file)/100;
+     sPlayer.P_X=LoadInt(file);
+     sPlayer.P_Y=LoadInt(file);
+     sPlayer.Life=LoadInt(file);
+     sPlayer.Angle=LoadInt(file);
+     sPlayer.Dz=LoadInt(file)/100;
+     sPlayer.PV=LoadInt(file);
+     sPlayer.Pz=LoadInt(file);
+     sPlayer.AutoMap=LoadInt(file);
+     sPlayer.D_Angle=LoadInt(file);
+     sPlayer.SitZ=LoadInt(file);
+     sPlayer.RedScreen=LoadInt(file);
+     sPlayer.RedScreenOn=LoadInt(file);
+     sPlayer.TimeSpacesuit=LoadInt(file);
+     sPlayer.TimeMegaSphere=LoadInt(file);
+     sPlayer.IDDQD=LoadInt(file);
+     sPlayer.MessageNo=LoadInt(file);
+     sPlayer.MessageTime=LoadInt(file);
+     sPlayer.Level=LoadInt(file);
      //восстанавливаем параметры оружия
-     Weapon.Fire_Faze=LoadInt(file);
-     Weapon.WeaponNo=LoadInt(file);
-     Weapon.Weapon=LoadInt(file);
-     Weapon.Dy=LoadInt(file);
-     Weapon.Vy=LoadInt(file);
+     sWeapon.Fire_Faze=LoadInt(file);
+     sWeapon.WeaponNo=LoadInt(file);
+     sWeapon.Weapon=LoadInt(file);
+     sWeapon.Dy=LoadInt(file);
+     sWeapon.Vy=LoadInt(file);
      for(n=0;n<10;n++)
       {
-       Weapon.Ammo[n]=LoadInt(file);
-       Weapon.MaxAmmo[n]=LoadInt(file);
-       Weapon.Attendance[n]=LoadInt(file);
-       for(int m=0;m<50;m++)  Weapon.Faze[n][m]=LoadInt(file);
+       sWeapon.Ammo[n]=LoadInt(file);
+       sWeapon.MaxAmmo[n]=LoadInt(file);
+       sWeapon.Attendance[n]=LoadInt(file);
+       for(int m=0;m<50;m++)  sWeapon.Faze[n][m]=LoadInt(file);
       }
      for(n=0;n<6;n++)
       for(int m=0;m<50;m++)
        {
-        Weapon.X[n][m]=LoadInt(file);
-        Weapon.Y[n][m]=LoadInt(file);
+        sWeapon.X[n][m]=LoadInt(file);
+        sWeapon.Y[n][m]=LoadInt(file);
        }
-     //загружаем карту(с учётом Player.Level)
-     LoadGame(Player.Level);
+     //загружаем карту(с учётом sPlayer.Level)
+     LoadGame(sPlayer.Level);
      //восстанавливаем параметры сегментов
-     for(n=0;n<Info.SegmentNumber;n++)
+     for(n=0;n<sInfo.SegmentNumber;n++)
       {
-       Segment[n].Visible=LoadInt(file);
-       Segment[n].Type=LoadInt(file);
+       sSegment[n].Visible=LoadInt(file);
+       sSegment[n].Type=LoadInt(file);
       }
      //загружаем параметры секторов
-     for(n=0;n<Info.SectorNumber;n++)
+     for(n=0;n<sInfo.SectorNumber;n++)
       {
-       Sector[n].UpTexture=LoadInt(file);
-       Sector[n].DownTexture=LoadInt(file);
-       Sector[n].Up=LoadInt(file);
-       Sector[n].Down=LoadInt(file);
-       Sector[n].Down1=LoadInt(file);
-       Sector[n].Down2=LoadInt(file);
-       Sector[n].DZ=LoadInt(file);
-       Sector[n].Time=LoadInt(file);
-       Sector[n].Type=LoadInt(file);
-       Sector[n].Sector=LoadInt(file);
+       sSector[n].UpTexture=LoadInt(file);
+       sSector[n].DownTexture=LoadInt(file);
+       sSector[n].Up=LoadInt(file);
+       sSector[n].Down=LoadInt(file);
+       sSector[n].Down1=LoadInt(file);
+       sSector[n].Down2=LoadInt(file);
+       sSector[n].DZ=LoadInt(file);
+       sSector[n].Time=LoadInt(file);
+       sSector[n].Type=LoadInt(file);
+       sSector[n].Sector=LoadInt(file);
       }
      //восстанавливаем существующие снаряды
      a=LoadInt(file);
@@ -607,7 +599,7 @@ int LoadingGame(int game)
        if (weapon==4) CreateNewPlasmaGunFire(x,y,z,dx,dy,dz,speed,power,weapon,object);
        if (weapon==5) CreateNewRocket(x,y,z,dx,dy,dz,speed,power,weapon,object);
        if (weapon==6) CreateNewBlueBall(x,y,z,dx,dy,dz,speed,power,weapon,object);
-       Missile[n]->Faze=faze;
+       cMissile[n]->Faze=faze;
       }
      //восстанавливаем существующих врагов
      a=LoadInt(file);
@@ -631,19 +623,19 @@ int LoadingGame(int game)
        int destroy=LoadInt(file);
        if (type==1) CreateNewDemon1(x,y);
        if (type==2) CreateNewDemon2(x,y);
-       Alien[n]->Coord.Z=z;
-       Alien[n]->Coord.Height=height;
-       Alien[n]->Coord.Radius=radius;
-       Alien[n]->Life=life;
-       Alien[n]->Faze=faze;
-       Alien[n]->Dx=dx;
-       Alien[n]->Dy=dy;
-       Alien[n]->Dz=dz;
-       Alien[n]->Active=active;
-       Alien[n]->Visible=visible;
-       Alien[n]->Angle=angle;
-       Alien[n]->Time=time;
-       Alien[n]->Destroy=destroy;
+       cAlien[n]->Coord.Z=z;
+       cAlien[n]->Coord.Height=height;
+       cAlien[n]->Coord.Radius=radius;
+       cAlien[n]->Life=life;
+       cAlien[n]->Faze=faze;
+       cAlien[n]->Dx=dx;
+       cAlien[n]->Dy=dy;
+       cAlien[n]->Dz=dz;
+       cAlien[n]->Active=active;
+       cAlien[n]->Visible=visible;
+       cAlien[n]->Angle=angle;
+       cAlien[n]->Time=time;
+       cAlien[n]->Destroy=destroy;
       }
      //восстанавливаем существующие предметы
      a=LoadInt(file);
@@ -677,22 +669,22 @@ int LoadingGame(int game)
        if (no==21) CreateNewMegaSphere(x,y);
        if (no==22) CreateNewSuperSphere(x,y);
        if (no==23) CreateNewHealingWater(x,y);
-       Thing[n]->Coord.X=x;
-       Thing[n]->Coord.Y=y;
-       Thing[n]->Coord.Z=z;
-       Thing[n]->Faze=faze;
+       cThing[n]->Coord.X=x;
+       cThing[n]->Coord.Y=y;
+       cThing[n]->Coord.Z=z;
+       cThing[n]->Faze=faze;
       }
-     Player.LoadPos=y;
-     Info.TX=new int[1];
-     Info.TY=new int[1];
-     Info.TType=new int[1];
-     Info.AX=new int[1];
-     Info.AY=new int[1];
-     Info.AType=new int[1];
-     Info.ThingNumber=0;
-     Info.AlienNumber=0;
+     sPlayer.LoadPos=y;
+     sInfo.TX=new int[1];
+     sInfo.TY=new int[1];
+     sInfo.TType=new int[1];
+     sInfo.AX=new int[1];
+     sInfo.AY=new int[1];
+     sInfo.AType=new int[1];
+     sInfo.ThingNumber=0;
+     sInfo.AlienNumber=0;
      fclose(file);
-     GetCursorData(30,26+y*16,dpt);
+     GetCursorsData(30,26+y*16,dpt);
      return(1);
     }
   }
@@ -701,48 +693,48 @@ void ClearResurs(void)
 {
  int x,y,n;
  for(x=0;x<100;x++)
-  for(y=0;y<100;y++) free(Maze.BlockMap[y][x]);
- free(Sector);
- free(Segment);
+  for(y=0;y<100;y++) free(sMaze.BlockMap[y][x]);
+ free(sSector);
+ free(sSegment);
  FreeTree(Node);
- delete(Info.TX);
- delete(Info.TY);
- delete(Info.TType);
- delete(Info.AX);
- delete(Info.AY);
- delete(Info.AType);
+ delete(sInfo.TX);
+ delete(sInfo.TY);
+ delete(sInfo.TType);
+ delete(sInfo.AX);
+ delete(sInfo.AY);
+ delete(sInfo.AType);
  for(n=0;n<NowThing;n++)
   {
-   delete(Thing[n]->Footage);
-   delete(Thing[n]);
+   delete(cThing[n]->Footage);
+   delete(cThing[n]);
   }
  for(n=0;n<NowAlien;n++)
   {
-   delete(Alien[n]->Footage);
-   delete(Alien[n]);
+   delete(cAlien[n]->Footage);
+   delete(cAlien[n]);
   }
- for(n=0;n<NowMissile;n++) delete(Missile[n]);
+ for(n=0;n<NowMissile;n++) delete(cMissile[n]);
  NowThing=0;
  NowAlien=0;
  NowMissile=0;
 }
 void StartGame(void)
 {
- Video.SetRGB_DAC(1,1,1);
- if (Player.TimeSpacesuit!=0) Video.SetRGB_DAC(0.7,1,0.7);
- if (Player.TimeMegaSphere!=0) Video.SetRGB_DAC(0.7,0.7,1);
- Player.Z=Sector[FindSector(Player.X,Player.Y)].Down+64;
- int w=Weapon.WeaponNo;
+ cVideo.SetRGB_DAC(1,1,1);
+ if (sPlayer.TimeSpacesuit!=0) cVideo.SetRGB_DAC(0.7,1,0.7);
+ if (sPlayer.TimeMegaSphere!=0) cVideo.SetRGB_DAC(0.7,0.7,1);
+ sPlayer.Z=sSector[FindSector(sPlayer.X,sPlayer.Y)].Down+64;
+ int w=sWeapon.WeaponNo;
  char s[255];
- PutBar(Data.Bar,0,0,168);
- itoa(Weapon.Ammo[w],s,10);
- Video.Print(13,180,s);
- itoa(Player.Life,s,10);
- Video.Print(60,180,s);
- Player.P_X=Player.X*65536;
- Player.P_Y=Player.Y*65536;
- int sector=FindSector(Player.X,Player.Y);
- Video.ClearWindow();
+ PutBar(sData.Bar,0,0,168);
+ itoa(sWeapon.Ammo[w],s,10);
+ cVideo.Print(13,180,s);
+ itoa(sPlayer.Life,s,10);
+ cVideo.Print(60,180,s);
+ sPlayer.P_X=sPlayer.X*65536;
+ sPlayer.P_Y=sPlayer.Y*65536;
+ int sector=FindSector(sPlayer.X,sPlayer.Y);
+ cVideo.ClearWindow();
  AnimateAll(sector);
  View();
  PutWeapon();
@@ -754,24 +746,24 @@ int Select(int x,int y,char *text)
  char *b=(char *)malloc(65000);
  char *vpt=(char *)0xa0000;
  for(int n=0;n<64000;n++) b[n]=*(vpt+n);
- Video.PrintToScreen(x,y,text);
+ cVideo.PrintToCVideo(x,y,text);
  int result;
  KeyTable[21]=0;
  KeyTable[49]=0;
  while(1)
   {
-   if (Consol.GetPressKey(21))
+   if (cKeyboard.GetPressKey(21))
     {
      result=1;
      break;
     }
-   if (Consol.GetPressKey(49))
+   if (cKeyboard.GetPressKey(49))
     {
      result=0;
      break;
     }
   }
- for(n=0;n<64000;n++) *(vpt+n)=b[n];
+ for(int n=0;n<64000;n++) *(vpt+n)=b[n];
  free(b);
  return(result);
 }

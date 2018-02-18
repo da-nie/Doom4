@@ -1,6 +1,4 @@
-void PutStaticSprite(int x,int y,unsigned char *wdp,int number);
-void PutBar(unsigned char *wdp,int number,int x,int y);
-void PutSprite(int x,int y,unsigned char *wdp,int number,int type);
+#include "sprites.h"
 //===========================================================================
 void PutBar(unsigned char *wdp,int number,int x,int y)
 {
@@ -15,7 +13,7 @@ void PutBar(unsigned char *wdp,int number,int x,int y)
    {
     offset++;
     if (m+y>199) continue;
-    *(Video.Buffer+(m+y)*320+n+x)=wdp[offset];
+    *(cVideo.Buffer+(m+y)*320+n+x)=wdp[offset];
    }
 }
 void PutStaticSprite(int x,int y,unsigned char *wdp,int number)
@@ -32,7 +30,7 @@ void PutStaticSprite(int x,int y,unsigned char *wdp,int number)
     offset++;
     if (m+y>167) continue;
     if (wdp[offset]==117) continue;
-    *(Video.Buffer+(m+y)*320+n+x)=wdp[offset];
+    *(cVideo.Buffer+(m+y)*320+n+x)=wdp[offset];
    }
 }
 void PutSprite(int x,int y,unsigned char *wdp,int number,int type)
@@ -44,7 +42,7 @@ void PutSprite(int x,int y,unsigned char *wdp,int number,int type)
  int len=wdp[0]+256*wdp[1];
  int hgt=wdp[2]+256*wdp[3];
  offset=3;
- if (type==2) vpt=Video.Buffer;
+ if (type==2) vpt=cVideo.Buffer;
  for(int n=0;n<len;n++)
   for(int m=0;m<hgt;m++)
    {

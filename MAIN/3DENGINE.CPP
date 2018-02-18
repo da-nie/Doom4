@@ -1,42 +1,32 @@
+#include "3dengine.h"
 //===========================================================================
 short TopLine[330];
 short BottomLine[330];
 short st;//число заполненых столбцов экрана
 //===========================================================================
-int SeenBox(BSPNode* tree,int type);
-inline void DrawBSPTree(BSPNode* tree);
-void DrawSubSector(BSPNode* root);
-void DrawFloorLine(int x,int y1,int y2,short f_texture);
-unsigned char *FindTexture(int ky,int offsett,int texture,int *mask,int *dy_,int *yt_);
-void DrawSimpleLine(int z,short xs,float Top,float Bottom,short u,int height,int o,int texture,short Sector);
-inline void DrawLowerLine(int z,short xs,float Top,float Bottom,short u,int height,int o,int texture,short Sector);
-inline void DrawUpperLine(int z,short xs,float Top,float Bottom,short u,int height,int o,int texture,short Sector);
-void DrawFloor_Flow(void);
-void View(void);
-//===========================================================================
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 //Возвращает 1 если описывающий прямоугольник виден.Иначе-0.        //
 //tree-указатель ветви дерева,type-тип прямоугольника(LEFT,RIGHT).  //
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
-int SeenBox(BSPNode* tree,int type)
+int SeenBox(SBSPNode* tree,int type)
 {
  if (tree->Split!=1) return(1);
- float ss=SinTable[Player.Angle];
- float cs=CosTable[Player.Angle];
+ float ss=SinTable[sPlayer.Angle];
+ float cs=CosTable[sPlayer.Angle];
  float x1,y1,x2,y2;
  if (type==LEFT)//проверим видимость поддерева
   {
-   x1=tree->LX1-Player.X;
-   y1=tree->LY1-Player.Y;
-   x2=tree->LX2-Player.X;
-   y2=tree->LY2-Player.Y;
+   x1=tree->LX1-sPlayer.X;
+   y1=tree->LY1-sPlayer.Y;
+   x2=tree->LX2-sPlayer.X;
+   y2=tree->LY2-sPlayer.Y;
   }
  if (type==RIGHT)
   {
-   x1=tree->RX1-Player.X;
-   y1=tree->RY1-Player.Y;
-   x2=tree->RX2-Player.X;
-   y2=tree->RY2-Player.Y;
+   x1=tree->RX1-sPlayer.X;
+   y1=tree->RY1-sPlayer.Y;
+   x2=tree->RX2-sPlayer.X;
+   y2=tree->RY2-sPlayer.Y;
   }
  float x1ss=x1*ss;
  float x2ss=x2*ss;
@@ -68,7 +58,7 @@ int SeenBox(BSPNode* tree,int type)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 //Прорисовывает лабиринт по BSP дереву.                             //
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
-inline void DrawBSPTree(BSPNode* tree)
+inline void DrawBSPTree(SBSPNode* tree)
 {
  if (st>=320) return;
  int p;
@@ -77,7 +67,7 @@ inline void DrawBSPTree(BSPNode* tree)
    DrawSubSector(tree);
    return;
   }
- p=Diagnostik(Player.X,Player.Y,tree->X1,tree->Y1,tree->X2,tree->Y2);
+ p=Diagnostik(sPlayer.X,sPlayer.Y,tree->X1,tree->Y1,tree->X2,tree->Y2);
  if (p<=0)
   {
    if (tree->Right!=NULL)
@@ -108,20 +98,20 @@ inline void DrawBSPTree(BSPNode* tree)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 //Прорисовывыет сегмент стены.                                      //
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
-void DrawSubSector(BSPNode* root)
+void DrawSubSector(SBSPNode* root)
 {
  float x1=root->X1;
  float x2=root->X2;
  float y1=root->Y1;
  float y2=root->Y2;
- int p=Diagnostik(Player.X,Player.Y,x1,y1,x2,y2);
- float cs=CosTable[Player.Angle];
- float ss=SinTable[Player.Angle];
+ int p=Diagnostik(sPlayer.X,sPlayer.Y,x1,y1,x2,y2);
+ float cs=CosTable[sPlayer.Angle];
+ float ss=SinTable[sPlayer.Angle];
  float c1,c2;
- x1=root->X1-Player.X;
- x2=root->X2-Player.X;
- y1=root->Y1-Player.Y;
- y2=root->Y2-Player.Y;
+ x1=root->X1-sPlayer.X;
+ x2=root->X2-sPlayer.X;
+ y1=root->Y1-sPlayer.Y;
+ y2=root->Y2-sPlayer.Y;
  float v1=x1*ss+y1*cs;
  float v2=x2*ss+y2*cs;
  if (v1<1 && v2<1) return;
@@ -146,7 +136,7 @@ void DrawSubSector(BSPNode* root)
  int offset=root->Offset%128;
  if (col2<col1)
   {
-   offset=128-(Segment[root->Type].Len+offset);
+   offset=128-(sSegment[root->Type].Len+offset);
    c1=col2;
    c2=col1;
    float a=u1;
@@ -177,15 +167,15 @@ void DrawSubSector(BSPNode* root)
    z=vo1*0.01;
    float vz1=1/vo1;
    float vt1=t/vo1;
-   float t1=84-(Sector[root->Sector1].Up-Player.Z+Player.Pz+Player.SitZ)/z;
-   float b1=84-(Sector[root->Sector1].Down-Player.Z+Player.Pz+Player.SitZ)/z;
+   float t1=84-(sSector[root->Sector1].Up-sPlayer.Z+sPlayer.Pz+sPlayer.SitZ)/z;
+   float b1=84-(sSector[root->Sector1].Down-sPlayer.Z+sPlayer.Pz+sPlayer.SitZ)/z;
    float dc=c2-c1+1;
    t=sqrt((vo2-v1)*(vo2-v1)+(uo2-u1)*(uo2-u1))+offset;
    z=vo2*0.01;
    float vz2=1/vo2;
    float vt2=t/vo2;
-   float t2=84-(Sector[root->Sector1].Up-Player.Z+Player.Pz+Player.SitZ)/z;
-   float b2=84-(Sector[root->Sector1].Down-Player.Z+Player.Pz+Player.SitZ)/z;
+   float t2=84-(sSector[root->Sector1].Up-sPlayer.Z+sPlayer.Pz+sPlayer.SitZ)/z;
+   float b2=84-(sSector[root->Sector1].Down-sPlayer.Z+sPlayer.Pz+sPlayer.SitZ)/z;
    float dtop=(t2-t1)/dc;
    float dbottom=(b2-b1)/dc;
    float dz=(vz2-vz1)/dc;
@@ -204,42 +194,42 @@ void DrawSubSector(BSPNode* root)
      if (TopLine[c]>=BottomLine[c]) continue;
       else
        {
-        Segment[root->Number].Visible=1;
+        sSegment[root->Number].Visible=1;
        }
      z=1.0/vz1;
      if (z<1) continue;
      t=vt1/vz1;
      float ys=t1;
      float ys1=b1;
-     DrawSimpleLine(z,c,ys,ys1,t,Sector[root->Sector1].Up-Sector[root->Sector1].Down,root->Type,Segment[root->Type].Type,root->Sector1);
+     DrawSimpleLine(z,c,ys,ys1,t,sSector[root->Sector1].Up-sSector[root->Sector1].Down,root->Type,sSegment[root->Type].Type,root->Sector1);
     }
   }
  else
   {
    int sd1,sd2,su1,su2;
-   short Sectors=0;
+   short sectors=0;
    if (p<0)//игрок справа
     {
-     sd1=Sector[root->Sector1].Down;
-     sd2=Sector[root->Sector2].Down;
-     su1=Sector[root->Sector2].Up;
-     su2=Sector[root->Sector1].Up;
-     Sectors=root->Sector1;
+     sd1=sSector[root->Sector1].Down;
+     sd2=sSector[root->Sector2].Down;
+     su1=sSector[root->Sector2].Up;
+     su2=sSector[root->Sector1].Up;
+     sectors=root->Sector1;
     }
    else
     {
-     sd1=Sector[root->Sector2].Down;
-     sd2=Sector[root->Sector1].Down;
-     su1=Sector[root->Sector1].Up;
-     su2=Sector[root->Sector2].Up;
-     Sectors=root->Sector2;
+     sd1=sSector[root->Sector2].Down;
+     sd2=sSector[root->Sector1].Down;
+     su1=sSector[root->Sector1].Up;
+     su2=sSector[root->Sector2].Up;
+     sectors=root->Sector2;
     }
    if (sd1>=su1) su1=sd1;
    t=sqrt((v1-vo1)*(v1-vo1)+(u1-uo1)*(u1-uo1))+offset;
    z=vo1*0.01;
    float vz1=1/vo1;
    float vt1=t/vo1;
-   float oz=-Player.Z+Player.Pz+Player.SitZ;
+   float oz=-sPlayer.Z+sPlayer.Pz+sPlayer.SitZ;
    float tu1=84-(su2+oz)/z;
    float bu1=84-(su1+oz)/z;
    float td1=84-(sd2+oz)/z;
@@ -277,17 +267,17 @@ void DrawSubSector(BSPNode* root)
      if (TopLine[c]>=BottomLine[c]) continue;
       else
        {
-        Segment[root->Number].Visible=1;
+        sSegment[root->Number].Visible=1;
        }
      z=1.0/vz1;
      if (z<1) continue;
      t=vt1/vz1;
      float ys=tu1;
      float ys1=bu1;
-     DrawUpperLine(z,c,ys,ys1,t,hgtup,root->Type,Segment[root->Type].Type,Sectors);
+     DrawUpperLine(z,c,ys,ys1,t,hgtup,root->Type,sSegment[root->Type].Type,sectors);
      ys=td1;
      ys1=bd1;
-     DrawLowerLine(z,c,ys,ys1,t,hgtdown,root->Type,Segment[root->Type].Type,Sectors);
+     DrawLowerLine(z,c,ys,ys1,t,hgtdown,root->Type,sSegment[root->Type].Type,sectors);
     }
   }
 }
@@ -304,14 +294,14 @@ unsigned char *FindTexture(int ky,int offsett,int texture,int *mask,int *dy_,int
  int yt=*yt_;
  int r=127;
  int offset=(offsett&127)<<7;
- unsigned char *rtexture=texture*16384+Data.WallTexture1+offset;
+ unsigned char *rtexture=texture*16384+sData.WallTexture1+offset;
  if (ky>=2 && ky<4)
   {
    dy=dy/2;
    yt=yt/2;
    r=63;
    offset=((int)(offsett&127)/2)<<6;
-   rtexture=texture*4096+Data.WallTexture2+offset;
+   rtexture=texture*4096+sData.WallTexture2+offset;
   }
  if (ky>=4 && ky<8)
   {
@@ -319,7 +309,7 @@ unsigned char *FindTexture(int ky,int offsett,int texture,int *mask,int *dy_,int
    yt=yt/4;
    r=31;
    offset=((int)(offsett&127)/4)<<5;
-   rtexture=texture*1024+Data.WallTexture3+offset;
+   rtexture=texture*1024+sData.WallTexture3+offset;
   }
  if (ky>=8 && ky<16)
   {
@@ -327,7 +317,7 @@ unsigned char *FindTexture(int ky,int offsett,int texture,int *mask,int *dy_,int
    yt=yt/8;
    r=15;
    offset=((int)(offsett&127)/8)<<4;
-   rtexture=texture*256+Data.WallTexture4+offset;
+   rtexture=texture*256+sData.WallTexture4+offset;
   }
  if (ky>=16 && ky<32)
   {
@@ -335,7 +325,7 @@ unsigned char *FindTexture(int ky,int offsett,int texture,int *mask,int *dy_,int
    yt=yt/16;
    r=7;
    offset=((int)(offsett&127)/16)<<3;
-   rtexture=texture*64+Data.WallTexture5+offset;
+   rtexture=texture*64+sData.WallTexture5+offset;
   }
  if (ky>=32 && ky<64)
   {
@@ -343,7 +333,7 @@ unsigned char *FindTexture(int ky,int offsett,int texture,int *mask,int *dy_,int
    yt=yt/32;
    r=3;
    offset=((int)(offsett&127)/32)<<2;
-   rtexture=texture*16+Data.WallTexture6+offset;
+   rtexture=texture*16+sData.WallTexture6+offset;
   }
  if (ky>=64 && ky<128)
   {
@@ -351,14 +341,14 @@ unsigned char *FindTexture(int ky,int offsett,int texture,int *mask,int *dy_,int
    yt=yt/64;
    r=1;
    offset=((int)(offsett&127)/64)<<1;
-   rtexture=texture*4+Data.WallTexture7+offset;
+   rtexture=texture*4+sData.WallTexture7+offset;
   }
  if (ky>=128)
   {
    dy=dy/128;
    yt=yt/128;
    r=1;
-   rtexture=texture+Data.WallTexture8;
+   rtexture=texture+sData.WallTexture8;
   }
  *dy_=dy;
  *yt_=yt;
@@ -372,14 +362,14 @@ unsigned char *FindTexture(int ky,int offsett,int texture,int *mask,int *dy_,int
 //высота стены,o-номер сектора,к которому принадлежит стена         //
 //texture-указатель на данные текстуры стены.                       //
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
-void DrawSimpleLine(int z,short xs,float Top,float Bottom,short u,int height,int o,int texture,short Sector)
+void DrawSimpleLine(int z,short xs,float Top,float Bottom,short u,int height,int o,int texture,short sector)
 {
  //заполняем линии буффера глубины
- register int pt=Z_Lines[xs].Pointer;
- Z_Lines[xs].Begin_Y[pt]=TopLine[xs];
- Z_Lines[xs].End_Y[pt]=BottomLine[xs];
- Z_Lines[xs].Z_Value[pt]=z;
- Z_Lines[xs].Pointer=pt+1;
+ register int pt=sZLines[xs].Pointer;
+ sZLines[xs].Begin_Y[pt]=TopLine[xs];
+ sZLines[xs].End_Y[pt]=BottomLine[xs];
+ sZLines[xs].Z_Value[pt]=z;
+ sZLines[xs].Pointer=pt+1;
  register int offset;
  register int j;
  register int n;
@@ -399,7 +389,7 @@ void DrawSimpleLine(int z,short xs,float Top,float Bottom,short u,int height,int
  if (Bottom<TopLine[xs]) Bottom=TopLine[xs];
  if (Top>=TopLine[xs])
   {
-   DrawFloorLine(xs,TopLine[xs],Top-1,Sector);
+   DrawFloorLine(xs,TopLine[xs],Top-1,sector);
    TopLine[xs]=Top;
   }
   else
@@ -410,13 +400,13 @@ void DrawSimpleLine(int z,short xs,float Top,float Bottom,short u,int height,int
    }
  if (Bottom<=BottomLine[xs])
   {
-   DrawFloorLine(xs,Bottom,BottomLine[xs]-1,Sector);
+   DrawFloorLine(xs,Bottom,BottomLine[xs]-1,sector);
    BottomLine[xs]=Bottom;
   }
  else Bottom=BottomLine[xs];
  TopLine[xs]=Bottom;
  BottomLine[xs]=Top;
- vpt=Video.Buffer+xs+((int)Top)*320;
+ vpt=cVideo.Buffer+xs+((int)Top)*320;
  int ky=dy>>20;//коэффициент сжатия
  int mask;
  unsigned char *texturet=FindTexture(ky,u,texture,&mask,&dy,&yt);
@@ -431,7 +421,7 @@ void DrawSimpleLine(int z,short xs,float Top,float Bottom,short u,int height,int
 //высота стены,o-номер сектора,к которому принадлежит стена         //
 //texture-указатель на данные текстуры стены.                       //
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
-inline void DrawLowerLine(int z,short xs,float Top,float Bottom,short u,int height,int o,int texture,short Sector)
+inline void DrawLowerLine(int z,short xs,float Top,float Bottom,short u,int height,int o,int texture,short sector)
 {
  register int offset;
  register int j;
@@ -444,7 +434,7 @@ inline void DrawLowerLine(int z,short xs,float Top,float Bottom,short u,int heig
  float Bottom_Top=(Bottom-Top+1);
  if (Top<TopLine[xs]) st++;
  if (Bottom<TopLine[xs]) Bottom=TopLine[xs];
- if (Bottom<BottomLine[xs]) DrawFloorLine(xs,Bottom,BottomLine[xs]-1,Sector);
+ if (Bottom<BottomLine[xs]) DrawFloorLine(xs,Bottom,BottomLine[xs]-1,sector);
  else Bottom=BottomLine[xs];
  if (Top<Bottom)
   {
@@ -455,12 +445,12 @@ inline void DrawLowerLine(int z,short xs,float Top,float Bottom,short u,int heig
      yt=dy*(j-Top);
      Top=j;
     }
-   vpt=Video.Buffer+xs+((int)Top)*320;
-   int pt=Z_Lines[xs].Pointer;
-   Z_Lines[xs].Begin_Y[pt]=Top;
-   Z_Lines[xs].End_Y[pt]=BottomLine[xs];
-   Z_Lines[xs].Z_Value[pt]=z;
-   Z_Lines[xs].Pointer=pt+1;
+   vpt=cVideo.Buffer+xs+((int)Top)*320;
+   int pt=sZLines[xs].Pointer;
+   sZLines[xs].Begin_Y[pt]=Top;
+   sZLines[xs].End_Y[pt]=BottomLine[xs];
+   sZLines[xs].Z_Value[pt]=z;
+   sZLines[xs].Pointer=pt+1;
    int ky=dy>>20;//коэффициент сжатия
    int mask;
    unsigned char *texturet=FindTexture(ky,u,texture,&mask,&dy,&yt);
@@ -472,11 +462,11 @@ inline void DrawLowerLine(int z,short xs,float Top,float Bottom,short u,int heig
   {
    if (Bottom<BottomLine[xs])
     {
-     int pt=Z_Lines[xs].Pointer;
-     Z_Lines[xs].Begin_Y[pt]=Bottom;
-     Z_Lines[xs].End_Y[pt]=BottomLine[xs];
-     Z_Lines[xs].Z_Value[pt]=z;
-     Z_Lines[xs].Pointer=pt+1;
+     int pt=sZLines[xs].Pointer;
+     sZLines[xs].Begin_Y[pt]=Bottom;
+     sZLines[xs].End_Y[pt]=BottomLine[xs];
+     sZLines[xs].Z_Value[pt]=z;
+     sZLines[xs].Pointer=pt+1;
      BottomLine[xs]=Bottom;
     }
   }
@@ -488,7 +478,7 @@ inline void DrawLowerLine(int z,short xs,float Top,float Bottom,short u,int heig
 //высота стены,o-номер сектора,к которому принадлежит стена         //
 //texture-указатель на данные текстуры стены.                       //
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
-inline void DrawUpperLine(int z,short xs,float Top,float Bottom,short u,int height,int o,int texture,short Sector)
+inline void DrawUpperLine(int z,short xs,float Top,float Bottom,short u,int height,int o,int texture,short sector)
 {
  register int offset;
  register int j;
@@ -501,7 +491,7 @@ inline void DrawUpperLine(int z,short xs,float Top,float Bottom,short u,int heig
  float Bottom_Top=(Bottom-Top+1);
  if (Bottom>BottomLine[xs]) st++;
  if (Top>BottomLine[xs]) Top=BottomLine[xs];
- if (Top>TopLine[xs]) DrawFloorLine(xs,TopLine[xs],Top-1,Sector);
+ if (Top>TopLine[xs]) DrawFloorLine(xs,TopLine[xs],Top-1,sector);
  if (Bottom>BottomLine[xs]) Bottom=BottomLine[xs];
  if (Top<Bottom)
   {
@@ -512,12 +502,12 @@ inline void DrawUpperLine(int z,short xs,float Top,float Bottom,short u,int heig
      yt=dy*(j-Top);
      Top=j;
     }
-   vpt=Video.Buffer+xs+((int)Top)*320;
-   int pt=Z_Lines[xs].Pointer;
-   Z_Lines[xs].Begin_Y[pt]=TopLine[xs];
-   Z_Lines[xs].End_Y[pt]=Bottom;
-   Z_Lines[xs].Z_Value[pt]=z;
-   Z_Lines[xs].Pointer=pt+1;
+   vpt=cVideo.Buffer+xs+((int)Top)*320;
+   int pt=sZLines[xs].Pointer;
+   sZLines[xs].Begin_Y[pt]=TopLine[xs];
+   sZLines[xs].End_Y[pt]=Bottom;
+   sZLines[xs].Z_Value[pt]=z;
+   sZLines[xs].Pointer=pt+1;
    int ky=dy>>20;//коэффициент сжатия
    int mask;
    unsigned char *texturet=FindTexture(ky,u,texture,&mask,&dy,&yt);
@@ -529,11 +519,11 @@ inline void DrawUpperLine(int z,short xs,float Top,float Bottom,short u,int heig
   {
    if (Top>TopLine[xs])
     {
-     int pt=Z_Lines[xs].Pointer;
-     Z_Lines[xs].Begin_Y[pt]=TopLine[xs];
-     Z_Lines[xs].End_Y[pt]=Top;
-     Z_Lines[xs].Z_Value[pt]=z;
-     Z_Lines[xs].Pointer=pt+1;
+     int pt=sZLines[xs].Pointer;
+     sZLines[xs].Begin_Y[pt]=TopLine[xs];
+     sZLines[xs].End_Y[pt]=Top;
+     sZLines[xs].Z_Value[pt]=z;
+     sZLines[xs].Pointer=pt+1;
      TopLine[xs]=Top;
     }
   }
@@ -543,10 +533,10 @@ inline void DrawUpperLine(int z,short xs,float Top,float Bottom,short u,int heig
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 void DrawFloor_Flow(void)
 {
-register int row,col;
+ register int row,col;
  int pt,n;
- int px=Player.P_X;
- int py=Player.P_Y;
+ int px=sPlayer.P_X;
+ int py=sPlayer.P_Y;
  int floor;
  int flow;
  int Z_SectorsFloor;
@@ -558,8 +548,8 @@ register int row,col;
  register int i0up,j0up;
  register int didown,djdown;
  register int i0down,j0down;
- register unsigned char *vptup=Video.Buffer+26560;
- register unsigned char *vptdown=Video.Buffer+26880;
+ register unsigned char *vptup=cVideo.Buffer+26560;
+ register unsigned char *vptdown=cVideo.Buffer+26880;
  register short *fbufferup=FloorBuffer+26560;
  register short *fbufferdown=FloorBuffer+26560;
  for(row=0;row<=83;row++,vptup-=640,fbufferup-=640)
@@ -582,13 +572,13 @@ register int row,col;
      if (floor!=fdown && fdown!=-1)
       {
        floor=fdown;
-       texturefloor=(Sector[floor].DownTexture<<14)+Data.WallTexture1;
-       Z_SectorsFloor=(-Sector[floor].Down+Player.Z-Player.Pz-Player.SitZ)*100;
+       texturefloor=(sSector[floor].DownTexture<<14)+sData.WallTexture1;
+       Z_SectorsFloor=(-sSector[floor].Down+sPlayer.Z-sPlayer.Pz-sPlayer.SitZ)*100;
        dist=Z_SectorsFloor/(row+1);
-       didown=dist*Maze.diTable[Player.Angle];
-       djdown=dist*Maze.djTable[Player.Angle];
-       i0down=dist*Maze.dsTable[Player.Angle]+px-didown*(159-col);
-       j0down=dist*Maze.dcTable[Player.Angle]+py-djdown*(159-col);
+       didown=dist*sMaze.diTable[sPlayer.Angle];
+       djdown=dist*sMaze.djTable[sPlayer.Angle];
+       i0down=dist*sMaze.dsTable[sPlayer.Angle]+px-didown*(159-col);
+       j0down=dist*sMaze.dcTable[sPlayer.Angle]+py-djdown*(159-col);
       }
      if (fdown!=-1)
       {
@@ -599,13 +589,13 @@ register int row,col;
      if (flow!=fup && fup!=-1)
       {
        flow=fup;
-       textureflow=(Sector[fup].UpTexture<<14)+Data.WallTexture1;
-       Z_SectorsFlow=(Sector[fup].Up-Player.Z+Player.Pz+Player.SitZ)*100;
+       textureflow=(sSector[fup].UpTexture<<14)+sData.WallTexture1;
+       Z_SectorsFlow=(sSector[fup].Up-sPlayer.Z+sPlayer.Pz+sPlayer.SitZ)*100;
        dist=Z_SectorsFlow/(row+1);
-       diup=dist*Maze.diTable[Player.Angle];
-       djup=dist*Maze.djTable[Player.Angle];
-       i0up=dist*Maze.dsTable[Player.Angle]+px-diup*(159-col);
-       j0up=dist*Maze.dcTable[Player.Angle]+py-djup*(159-col);
+       diup=dist*sMaze.diTable[sPlayer.Angle];
+       djup=dist*sMaze.djTable[sPlayer.Angle];
+       i0up=dist*sMaze.dsTable[sPlayer.Angle]+px-diup*(159-col);
+       j0up=dist*sMaze.dcTable[sPlayer.Angle]+py-djup*(159-col);
       }
      if (fup!=-1)
       {
@@ -647,27 +637,27 @@ void View(void)
    TopLine[n]=0;
    BottomLine[n]=167;
    //инициализировали линии буффера глубины
-   Z_Lines[n].Pointer=0;//в списке нет линий
+   sZLines[n].Pointer=0;//в списке нет линий
   }
  DrawBSPTree(Node);//рисуем сегменты
  DrawFloor_Flow();//рисуем полы и потолки
  int *necess=new int[1+NowMissile+NowThing+NowAlien];//сортируем предметы,врагов и снаряды
  int *znecess=new int[1+NowMissile+NowThing+NowAlien];
- float cs=CosTable[Player.Angle];
- float ss=SinTable[Player.Angle];
+ float cs=CosTable[sPlayer.Angle];
+ float ss=SinTable[sPlayer.Angle];
  int x1,y1;
  int no=0;
  //добавляем в таблицу сортировки снаряды
  for(n=0;n<NowMissile;n++)
   {
-   x1=Missile[n]->X-Player.X;
-   y1=Missile[n]->Y-Player.Y;
+   x1=cMissile[n]->X-sPlayer.X;
+   y1=cMissile[n]->Y-sPlayer.Y;
    int z=x1*ss+y1*cs;
    if (!(z<7 || z>6400))
     {
      int x=x1*cs-y1*ss;
-     int col1=160+160*(x-Missile[n]->Radius)/z;
-     int col2=160+160*(x+Missile[n]->Radius)/z;
+     int col1=160+160*(x-cMissile[n]->Radius)/z;
+     int col2=160+160*(x+cMissile[n]->Radius)/z;
      if (!(col1<0 && col2<0 || col1>319 && col2>319))
       {
        necess[no]=n;
@@ -679,14 +669,14 @@ void View(void)
  //добавляем предметы
  for(n=0;n<NowThing;n++)
   {
-   x1=Thing[n]->Coord.X-Player.X;
-   y1=Thing[n]->Coord.Y-Player.Y;
+   x1=cThing[n]->Coord.X-sPlayer.X;
+   y1=cThing[n]->Coord.Y-sPlayer.Y;
    int z=x1*ss+y1*cs;
    if (!(z<7 || z>6400))
     {
      int x=x1*cs-y1*ss;
-     int col1=160+160*(x-Thing[n]->Coord.Radius)/z;
-     int col2=160+160*(x+Thing[n]->Coord.Radius)/z;
+     int col1=160+160*(x-cThing[n]->Coord.Radius)/z;
+     int col2=160+160*(x+cThing[n]->Coord.Radius)/z;
      if (!(col1<0 && col2<0 || col1>319 && col2>319))
       {
        necess[no]=n+NowMissile;
@@ -698,14 +688,14 @@ void View(void)
  //добавляем врагов
  for(n=0;n<NowAlien;n++)
   {
-   x1=Alien[n]->Coord.X-Player.X;
-   y1=Alien[n]->Coord.Y-Player.Y;
+   x1=cAlien[n]->Coord.X-sPlayer.X;
+   y1=cAlien[n]->Coord.Y-sPlayer.Y;
    int z=x1*ss+y1*cs;
    if (!(z<7 || z>6400))
     {
      int x=x1*cs-y1*ss;
-     int col1=160+160*(x-Alien[n]->Coord.Radius)/z;
-     int col2=160+160*(x+Alien[n]->Coord.Radius)/z;
+     int col1=160+160*(x-cAlien[n]->Coord.Radius)/z;
+     int col2=160+160*(x+cAlien[n]->Coord.Radius)/z;
      if (!(col1<0 && col2<0 || col1>319 && col2>319))
       {
        necess[no]=n+NowThing+NowMissile;
@@ -729,9 +719,9 @@ void View(void)
    }
  for(n=0;n<no;n++)
   {
-   if (necess[n]<NowMissile && necess[n]>=0) Missile[necess[n]]->Put();//выводим снаряды
-   if (necess[n]>=NowMissile && necess[n]<NowThing+NowMissile) Thing[necess[n]-NowMissile]->Put();//выводим предметы
-   if (necess[n]>=NowThing+NowMissile) Alien[necess[n]-NowMissile-NowThing]->Put();//выводим врагов
+   if (necess[n]<NowMissile && necess[n]>=0) cMissile[necess[n]]->Put();//выводим снаряды
+   if (necess[n]>=NowMissile && necess[n]<NowThing+NowMissile) cThing[necess[n]-NowMissile]->Put();//выводим предметы
+   if (necess[n]>=NowThing+NowMissile) cAlien[necess[n]-NowMissile-NowThing]->Put();//выводим врагов
   }
  delete(necess);
  delete(znecess);

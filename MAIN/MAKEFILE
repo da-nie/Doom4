@@ -1,0 +1,23 @@
+# MEMBFUN
+
+doom4: .SYMBOLIC doom4.exe
+
+objects =main.obj &
+common.obj &
+3dengine.obj &
+automap.obj &
+classes.obj &
+control.obj &
+keyboard.obj &
+loading.obj &
+menu.obj &
+mouse.obj &
+special.obj &
+sprites.obj &
+timer.obj &
+video.obj &
+
+cpp_options = -s -5r -5s -fp3 -otiarnlm -bt=dos
+
+
+!include ../cppexamp.mif

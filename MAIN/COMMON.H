@@ -1,21 +1,16 @@
-//=========================================================================//
-//3-х мерный движок,основанный на BSP дереве.Принцып работы данной         //
-//программы несущественным образом отличается от технологии DOOM`а.        //
-//Создано и оформлено Дмитрием Труновым 27.05.2002.                        //
-//Все права защищены.Никакая часть этой программы не может быть            //
-//воспроизведена без разрешения автора.                                    //
-//=========================================================================//
+#ifndef COMMON_H
+#define COMMON_H
 
-#include<dos.h>
-#include<string.h>
-#include<malloc.h>
-#include<graph.h>
-#include<conio.h>
-#include<stdio.h>
-#include<stdlib.h>
-#include<math.h>
-#include<time.h>
-#include<bios.h>
+#include <dos.h>
+#include <string.h>
+#include <malloc.h>
+#include <graph.h>
+#include <conio.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <time.h>
+#include <bios.h>
 
 #define pi 3.14159265358
 
@@ -38,7 +33,7 @@
 #define WEAPON3 4
 #define WEAPON4 5
 
-struct DATA
+struct SData
 {
  unsigned char *WallTexture1;
  unsigned char *WallTexture2;
@@ -61,8 +56,8 @@ struct DATA
  unsigned char *Fire;
  unsigned char *Thing;
  unsigned char *Alien;
-} Data;
-struct PLAYER
+};
+struct SPlayer
 {
  int LoadPos;//позиции в меню сохранения и загрузки
  int SavePos;
@@ -89,8 +84,8 @@ struct PLAYER
  int Level;//номер уровня
  int Inerci;//инерция движения игрока
  int FPS;//кадры в секунду
-} Player;
-struct WEAPON
+};
+struct SWeapon
 {
  int Fire_Faze;//фаза оружия
  int WeaponNo;//номер оружия
@@ -103,77 +98,27 @@ struct WEAPON
  int Y[6][50];//координаты вывода фазы оружия
  int Dy;//приращение при убирании-поднимании оружия
  int Vy;//координата при убирании оружия
-} Weapon;
-struct MAZE//данные о лабиринте и таблицы горизонтального текстурирования
+};
+struct SMaze//данные о лабиринте и таблицы горизонтального текстурирования
 {
  short *BlockMap[100][100];
  int dcTable[361];
  int dsTable[361];
  int diTable[361];
  int djTable[361];
-} Maze;
-struct Z_LINES//линии буффера глубины
+};
+struct SZLines//линии буффера глубины
 {
  short Pointer;
  short Begin_Y[170];
  short End_Y[170];
  int Z_Value[170];
-} Z_Lines[321];
-short FloorBuffer[64000];//буфер параметров полов
-struct MOUSE
+};
+struct SMouse
 {
  int HSpeed;
  int VSpeed;
  int Double;
-} Mouse;
-float CosTable[361],SinTable[361];//таблицы синусов и косинусов
-//===========================================================================
-#include"video.h"
-#include"timer.h"
-#include"keyboard.h"
-#include"mouse.h"
-Screen Video;
-Keyboard Consol;
-#include"loading.h"
-#include"sprites.h"
-#include"classes.h"
-#include"special.h"
-#include"automap.h"
-#include"3dengine.h"
-#include"control.h"
-#include"menu.h"
-//===========================================================================
-void InitGame(void);
-//===========================================================================
-void main(void)
-{
- InitGame();
- PutSprite(0,0,Data.Menu,0,0);
- PutSprite(0,0,Data.Menu,0,2);
- Video.PrintToScreen(0,192," DMITRIY TRUNOW 23.03.2002 MODIFY 18.06.2005");
- Menu();
- Video.CloseVga();
- OldTimer();
- m_setsensitivity(Mouse.HSpeed,Mouse.VSpeed,Mouse.Double);
-}
-//===========================================================================
-void InitGame(void)
-{
- Video.InitVga();
- Video.Clear();
- InitPlayer();
- Video.LoadPalette("resurs\\game.pal");
- LoadResurs();
- StartUpTimer(140);
- m_init();
- int h,v,d;
- m_getsensitivity(&h,&v,&d);
- Mouse.HSpeed=h;
- Mouse.VSpeed=v;
- Mouse.Double=d;
- Player.LoadPos=0;
- Player.SavePos=0;
- m_setsensitivity(16,16,16);
-}
+};
 
-
+#endif

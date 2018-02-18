@@ -1,0 +1,990 @@
+Open Watcom Linker Version 1.7
+Portions Copyright (c) 1985-2002 Sybase, Inc. All Rights Reserved.
+Created on:       15/10/25 19:01:16
+Executable Image: doom4.exe
+creating a DOS/4G executable
+symbol near CKeyboard::CKeyboard( CKeyboard const near & ) removed
+symbol std::istream near & near operator >>( std::istream near &, smanip<long near > const near & ) removed
+symbol std::istream near & near operator >>( std::istream near &, smanip<int near > const near & ) removed
+symbol std::ostream near & near operator <<( std::ostream near &, smanip<long near > const near & ) removed
+symbol std::ostream near & near operator <<( std::ostream near &, smanip<int near > const near & ) removed
+symbol __set_commode_ removed
+symbol _heapenable removed
+
+
+                        +------------+
+                        |   Groups   |
+                        +------------+
+
+Group                           Address              Size
+=====                           =======              ====
+
+DGROUP                          0002:00000000        000abaf0
+
+
+
+                        +--------------+
+                        |   Segments   |
+                        +--------------+
+
+Segment                Class          Group          Address         Size
+=======                =====          =====          =======         ====
+
+BEGTEXT                CODE           AUTO           0001:00000000   00000010
+_TEXT                  CODE           AUTO           0001:00000010   00021383
+_NULL                  BEGDATA        DGROUP         0002:00000000   00000004
+_AFTERNULL             BEGDATA        DGROUP         0002:00000004   00000000
+CONST                  DATA           DGROUP         0002:00000004   000009ec
+CONST2                 DATA           DGROUP         0002:000009f0   0000013c
+_DATA                  DATA           DGROUP         0002:00000b2c   000019a8
+XIB                    DATA           DGROUP         0002:000024d4   00000000
+XI                     DATA           DGROUP         0002:000024d4   00000042
+XIE                    DATA           DGROUP         0002:00002516   00000000
+YIB                    DATA           DGROUP         0002:00002516   00000000
+YI                     DATA           DGROUP         0002:00002516   0000001e
+YIE                    DATA           DGROUP         0002:00002534   00000000
+TIB                    DATA           DGROUP         0002:00002534   00000000
+TI                     DATA           DGROUP         0002:00002534   00000000
+TIE                    DATA           DGROUP         0002:00002534   00000000
+DATA                   DATA           DGROUP         0002:00002534   00000000
+_BSS                   BSS            DGROUP         0002:00002540   000995a6
+STACK                  STACK          DGROUP         0002:0009baf0   00010000
+
+
+                        +----------------+
+                        |   Memory Map   |
+                        +----------------+
+
+* = unreferenced symbol
++ = symbol only referenced locally
+
+Address        Symbol
+=======        ======
+
+Module: main.obj(C:\PROGRAMM\MDOOM4\MAIN\main.cpp)
+0001:00000010  main
+0001:000000a0+ void near InitGame()
+Module: common.obj(C:\PROGRAMM\MDOOM4\MAIN\common.cpp)
+0002:00002540  SData near sData
+0002:0000258c  SPlayer near sPlayer
+0002:000025f0  SWeapon near sWeapon
+0002:000037ac  SMaze near sMaze
+0002:0000ea7c  SZLines near sZLines[]
+0002:000798d0  SMouse near sMouse
+0002:000798dc  short near FloorBuffer[]
+0002:00098cdc  float near CosTable[]
+0002:00099280  float near SinTable[]
+Module: 3dengine.obj(C:\PROGRAMM\MDOOM4\MAIN\3dengine.cpp)
+0001:00002870+ void near DrawBSPTree( SBSPNode near * )
+0001:00000130+ int near SeenBox( SBSPNode near *, int )
+0001:00000390+ void near DrawSubSector( SBSPNode near * )
+0001:00001880+ void near DrawFloorLine( int, int, int, short )
+0001:000018d0+ char unsigned near * near FindTexture( int, int, int, int near *, int near *, int near * )
+0001:00001b90+ void near DrawSimpleLine( int, short, float, float, short, int, int, int, short )
+0001:00001ea0+ void near DrawFloor_Flow()
+0001:000021d0+ void near ClearFloorBuffer()
+0001:00002220  void near View()
+0002:00099824+ short near TopLine[]
+0002:00099ab8+ short near BottomLine[]
+0002:00099d4c+ short near st
+Module: automap.obj(C:\PROGRAMM\MDOOM4\MAIN\automap.cpp)
+0001:00002970+ void near Line( int, int, int, int, char )
+0001:00002ae0+ void near putpixel( int, int, char )
+0001:00002b20  void near PutAutoMap()
+Module: classes.obj(C:\PROGRAMM\MDOOM4\MAIN\classes.cpp)
+0001:00002d10+ CThing near * near CreateThing()
+0001:00002d40  void near DeleteThing( int )
+0001:00002da0+ CAlien near * near CreateAlien()
+0001:00002dd0  void near DeleteAlien( int )
+0001:00002e30+ CMissile near * near CreateMissile()
+0001:00002e60  void near DeleteMissile( int )
+0001:00002eb0+ void near CThing::SetCoord( SParameters )
+0001:00002ed0+ void near CThing::SetFootage( SFootage near *, int )
+0001:00002f20+ void near CThing::SetThingToFloor()
+0001:00002fd0  void near CThing::Put()
+0001:000033a0  void near CreateNewRedTorch( int, int )
+0001:00003470  void near CreateNewBlueTorch( int, int )
+0001:00003540  void near CreateNewButt( int, int )
+0001:00003610  void near CreateNewBattery( int, int )
+0001:00003710  void near CreateNewMedicine( int, int )
+0001:000037e0  void near CreateNewSuperMedicine( int, int )
+0001:000038c0  void near CreateNewGun( int, int )
+0001:00003960  void near CreateNewMachineGun( int, int )
+0001:00003a00  void near CreateNewPlasmaGun( int, int )
+0001:00003aa0  void near CreateNewGunAmmo( int, int )
+0001:00003b40  void near CreateNewMGunAmmo( int, int )
+0001:00003be0  void near CreateNewGreyAltar( int, int )
+0001:00003c80  void near CreateNewRedAltar( int, int )
+0001:00003d20  void near CreateNewSuppository( int, int )
+0001:00003dc0  void near CreateNewPistolAmmo( int, int )
+0001:00003e60  void near CreateNewLocMap( int, int )
+0001:00003f20  void near CreateNewSpacesuit( int, int )
+0001:00003fc0  void near CreateNewMiniSuppository( int, int )
+0001:00004060  void near CreateNewBlood( int, int )
+0001:00004100  void near CreateNewMiniBlood( int, int )
+0001:000041a0  void near CreateNewMegaSphere( int, int )
+0001:00004280  void near CreateNewSuperSphere( int, int )
+0001:00004360  void near CreateNewHealingWater( int, int )
+0001:00004450+ void near CAlien::SetCoord( SParameters )
+0001:00004470+ void near CAlien::SetFootage( SFootage near *, int )
+0001:000044c0+ void near CAlien::SetAlienToFloor()
+0001:00004580  void near CAlien::Put()
+0001:00004990  void near CreateNewDemon1( int, int )
+0001:00004b30  void near CreateNewDemon2( int, int )
+0001:00004d30  void near CMissile::Put()
+0001:00005100  void near CreateNewRocket( float, float, float, float, float, float, int, int, int, int )
+0001:000051e0  void near CreateNewPlasmaGunFire( float, float, float, float, float, float, int, int, int, int )
+0001:000052c0  void near CreateNewGunFire( float, float, float, float, float, float, int, int, int, int )
+0001:00005350  void near CreateNewBlueBall( float, float, float, float, float, float, int, int, int, int )
+0002:00099d50  CThing near * near cThing[]
+0002:0009a520  int near NowThing
+0002:0009a524  CAlien near * near cAlien[]
+0002:0009acf4  int near NowAlien
+0002:0009acf8  CMissile near * near cMissile[]
+0002:0009b4c8  int near NowMissile
+Module: control.obj(C:\PROGRAMM\MDOOM4\MAIN\control.cpp)
+0001:00005430+ int near Impact( float, float, float, int, int, int )
+0001:00005d80+ int near ImpactAll( float, float, float, int, int, int, int near * near *, int near * )
+0001:000066b0+ int near Intersection( float, float, float, float, float, float, float, float, float near *, float near * )
+0001:00006780+ void near ImpactsPlayerToThing( float, float, float, int, int )
+0001:00006df0+ int near CheckTouchLine( int, int, int, int, int, int, int, int, float, int, int, float near *, float near *, int near * )
+0001:00008540+ int near CheckWay( float, float, float, float, float, float, int, int, int, float near *, float near *, int near * )
+0001:00008ab0+ void near SlideTraverse( float, float, float, float )
+0001:00008d30  void near InitPlayer()
+0001:000095c0+ int near DistanceOfVector( float, float, float, float )
+0001:00009720+ void near AnimateDoor( int )
+0001:00009870+ void near AnimateGantry( int )
+0001:00009a40+ void near AnimateFloor_Flow()
+0001:00009cc0  void near SetThing()
+0001:0000a060+ void near AnimateThing()
+0001:0000a2f0+ void near SpecialSector( int )
+0001:0000a3d0+ void near MoveAlien()
+0001:0000a890+ void near ColorEffect()
+0001:0000ab60+ void near AnimateFace( int )
+0001:0000acc0  void near PutMessage()
+0001:0000af00  void near AnimateAll( int )
+0001:0000af50+ int near ViewAll()
+0001:0000b020+ int near CKeyboardControl( int )
+0001:0000b520  int near Control()
+0001:0000b640+ int near Use( int )
+0001:0000bbf0+ void near RotateLeft()
+0001:0000bc40+ void near RotateRight()
+0001:0000bc90+ void near MoveUp( int )
+0001:0000be10+ void near MoveDown( int )
+0001:0000bf80+ void near MoveLeft()
+0001:0000c0a0+ void near MoveRight()
+0001:0000c1c0+ void near Fallen( int )
+0001:0000c290  void near PutWeapon()
+0001:0000c450+ void near AnimateWeapon()
+0001:0000c500+ void near Fire()
+0001:0000ca10+ void near ChangeWeapon( int )
+0001:0000ca40+ void near AnimateMissile()
+0001:0000cd00+ void near PutStatistik()
+0001:0000cda0+ float near FindAlien()
+0002:0009b4cc+ int near Timer
+Module: keyboard.obj(C:\PROGRAMM\MDOOM4\MAIN\keyboard.cpp)
+0001:0000cfa0+ void far CKeyboard::NewCKeyboard()
+0001:0000d010+ near CKeyboard::CKeyboard()
+0001:0000d060+ near CKeyboard::~CKeyboard()
+0001:0000d080  char near CKeyboard::GetPressKey( char unsigned )
+0002:0009b4d0  char near KeyTable[]
+0002:0009b5d0  CKeyboard near cKeyboard
+Module: loading.obj(C:\PROGRAMM\MDOOM4\MAIN\loading.cpp)
+0001:0000d090+ char unsigned near * near LoadSpriteFile( char near * )
+0001:0000d170  void near LoadResurs()
+0001:0000d8c0  int near LoadGame( int )
+0001:0000dda0  int near Diagnostik( float, float, float, float, float, float )
+0001:0000de10  int near FindSector( float, float )
+0001:0000df40  int near CollizeLine( float, float, float, float, float, float, float, float )
+0001:0000e020  void near FreeTree( SBSPNode near * )
+0001:0000e070  int near LoadInt( __iobuf near * )
+0001:0000e100  void near SaveInt( __iobuf near *, int )
+0001:0000e1b0* void near LoadThing( char near * )
+0001:0000e2a0* void near LoadAlien( char near * )
+0001:0000e390+ SBSPNode near * near LoadTree( __iobuf near * )
+0001:0000e8e0+ SBSPNode near * near LoadBSPTree( __iobuf near *, SSegment near * )
+0001:0000eb20+ int near FindPaletteIndex( int, int, int )
+0001:0000ebb0+ void near MipMapping( __iobuf near *, int )
+0001:0000f8c0+ __iobuf near * near GoToBlock( int )
+0002:0009b5d8  SInfo near sInfo
+0002:0009b608  SSegment near * near sSegment
+0002:0009b60c  SSector near * near sSector
+0002:0009b610  SBSPNode near * near Node
+0002:0009b614+ __iobuf near * near in
+Module: menu.obj(C:\PROGRAMM\MDOOM4\MAIN\menu.cpp)
+0001:0000fb10  void near Menu()
+0001:00010300+ void near GetCursorsData( int, int, char near * )
+0001:00010380+ void near SetCursorsData( int, int, char near * )
+0001:00010400+ int near AddString( char near *, char near *, int )
+0001:00010460+ void near PrintSlot()
+0001:00010800+ void near SaveGame()
+0001:00011530+ int near LoadingGame( int )
+0001:000126b0+ void near ClearResurs()
+0001:00012840+ void near StartGame()
+0001:000129f0+ int near Select( int, int, char near * )
+Module: mouse.obj(C:\PROGRAMM\MDOOM4\MAIN\mouse.cpp)
+0001:00012aa0  int near m_init()
+0001:00012ad0* void near m_show()
+0001:00012af0* void near m_hide()
+0001:00012b10  void near m_getpos( int near *, int near *, int near * )
+0001:00012b60  void near m_setpos( int, int )
+0001:00012b90  void near m_setsensitivity( int, int, int )
+0001:00012bd0  void near m_getsensitivity( int near *, int near *, int near * )
+Module: special.obj(C:\PROGRAMM\MDOOM4\MAIN\special.cpp)
+0001:00012c20  void near RunningScreen()
+0001:00012ed0  void near LightingPlus()
+0001:00012f30  void near LightingMinus()
+0001:00012f90  int near rnd( int )
+Module: sprites.obj(C:\PROGRAMM\MDOOM4\MAIN\sprites.cpp)
+0001:00012fb0  void near PutBar( char unsigned near *, int, int, int )
+0001:00013080  void near PutStaticSprite( int, int, char unsigned near *, int )
+0001:00013160  void near PutSprite( int, int, char unsigned near *, int, int )
+Module: timer.obj(C:\PROGRAMM\MDOOM4\MAIN\timer.cpp)
+0001:00013250+ void far new_timer()
+0001:00013300  void near StartUpTimer( int )
+0001:00013360+ void near SetTimer( int unsigned )
+0001:00013390  void near OldTimer()
+0002:0009b618  int near TimerUser
+0002:0009b61c+ int near counsec
+0002:0009b620+ int near secs
+0002:0009b624+ int near mins
+0002:0009b628+ int near hours
+0002:0009b62c+ void (far * near tmoldinter)()
+Module: video.obj(C:\PROGRAMM\MDOOM4\MAIN\video.cpp)
+0001:000133c0  void near CVideo::InitVga()
+0001:000133e0  void near CVideo::CloseVga()
+0001:00013400  void near CVideo::ClearWindow()
+0001:00013450  void near CVideo::Clear()
+0001:000134a0  void near CVideo::ViewWindow()
+0001:000134d0  void near CVideo::ViewBar()
+0001:00013500  void near CVideo::View()
+0001:00013530  void near CVideo::SetRGB_DAC( float, float, float )
+0001:000135c0  void near CVideo::LoadPalette( char near * )
+0001:00013670+ int near CVideo::PutSymbol( int, int, char, int )
+0001:00013820  void near CVideo::Print( int, int, char near * )
+0001:00013870  void near CVideo::PrintToCVideo( int, int, char near * )
+0002:0009b634  CVideo near cVideo
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(cstart)
+0001:00000003* ___begtext
+0002:00000000* __nullarea
+0002:00000b50  __D16Infoseg
+0002:00000b52  __x386_zero_base_selector
+0001:000138b8  _cstart_
+0001:00013ade  __exit
+0001:00013ae1  __do_exit_with_msg__
+0001:00013b1c  __GETDS
+0001:00013b1c  __GETDSStart_
+0001:00013b27  __GETDSEnd_
+Module: c:\lang\watcom10\.\lib386\plib3s.lib(fsroot)
+0002:000024da  ___wcpp_4_data_init_fs_root_
+Module: c:\lang\watcom10\.\lib386\math387s.lib(fchop)
+0001:00013b38  __CHP
+Module: c:\lang\watcom10\.\lib386\plib3s.lib(opnewarr)
+0001:00013b50  void near * near operator new []( int unsigned )
+Module: c:\lang\watcom10\.\lib386\plib3s.lib(opdel)
+0001:00013b60  void near operator delete( void near * )
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(fltused)
+0002:00000b54  _fltused_
+Module: c:\lang\watcom10\.\lib386\plib3s.lib(iofefg)
+0002:000024e6  __ppfltused_
+Module: c:\lang\watcom10\.\lib386\dos\emu387.lib(386)
+0001:00013bb4  __init_387_emulator
+0001:00013bb9* __fini_387_emulator
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(_8087)
+0002:00000b58  __8087
+0002:00000b59  __real87
+Module: c:\lang\watcom10\.\lib386\plib3s.lib(opnew)
+0001:00013bc0  void near * near operator new( int unsigned )
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(nmalloc)
+0001:00013c10  malloc
+0001:00013c20  _nmalloc
+0002:00000b5c  __nheapbeg
+0002:00000b60  __MiniHeapRover
+0002:00000b64  __LargestSizeB4MiniHeapRover
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(nrealloc)
+0001:00013d40  realloc
+0001:00013d60+ _nrealloc
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(nfree)
+0001:00013e20  free
+0001:00013e30  _nfree
+0002:0009b958  __MiniHeapFreeRover
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(itoa)
+0001:00013f20+ utoa
+0001:00013f80  itoa
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(clockdos)
+0001:00013fc0+ __ibm_bios_get_ticks
+0001:00014050  clock
+Module: c:\lang\watcom10\.\lib386\plib3s.lib(stablcl)
+0001:00014070  __wcpp_4_lcl_register_
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(d_getvec)
+0001:00014080  _dos_getvect
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(d_setvec)
+0001:000140c0  _dos_setvect
+Module: c:\lang\watcom10\.\lib386\plib3s.lib(undefed)
+0001:00014100  __wcpp_4_undefed_cdtor_
+Module: c:\lang\watcom10\.\lib386\plib3s.lib(moddtorr)
+0002:0000251c  ___wcpp_4_data_module_dtor_ref_
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(fopen)
+0001:00014110+ __open_flags
+0001:00014330+ _fsopen
+0001:00014390  fopen
+0001:00014420* freopen
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(fread)
+0001:00014490  fread
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(fclose)
+0001:00014670  __doclose
+0001:00014710  __shutdown_stream
+0001:00014740  fclose
+0002:0009b960+ __RmTmpFileFn
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(fwrite)
+0001:00014770  fwrite
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(dosgtime)
+0001:00014960  _dos_getdate
+0001:0001497f  _dos_gettime
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(int386)
+0001:000149a0  int386
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(rand)
+0001:000149d0  rand
+0001:00014a00* srand
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(setvideos)
+0001:00014be0  _setvideomode
+0001:00014e69  _PaletteInit
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(cmain386)
+0001:00014f60  __CMain
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(initrtns)
+0001:00014fd0  __InitRtns
+0001:00015030  __FiniRtns
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(dosseg)
+0000:00001234  __DOSseg__
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(crwdata)
+0002:00000c67  _osmajor
+0002:00000c68  _osminor
+0002:00000c3c  _psp
+0002:00000c5e  _Extender
+0002:00000c5f  _ExtenderSubtype
+0002:00000c60  __X32VM
+0002:00000c40* __x386_stacklow
+0002:00000c34  _LpCmdLine
+0002:00000c38  _LpPgmName
+0002:00000c2c  _dynend
+0002:00000c30  _curbrk
+0002:00000c40  _STACKLOW
+0002:00000c44  _STACKTOP
+0002:00000c48  __ASTACKSIZ
+0002:00000c4c  __ASTACKPTR
+0002:00000c50  _cbyte
+0002:00000c54* _cbyte2
+0002:00000c58  _child
+0002:00000c61  _Envptr
+0002:00000c65  _Envseg
+0002:00000c5c  __no87
+0002:00000c69  __FPE_handler
+Module: c:\lang\watcom10\.\lib386\plib3s.lib(cppdata)
+0002:0009b964  _wint_thread_data
+0002:0009b988* __compiled_under_generic
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(setefg)
+0001:000150a0  __setEFGfmt
+Module: c:\lang\watcom10\.\lib386\plib3s.lib(iofnoefg)
+0002:00000c70  void (near * near __EFG_cnvs2d)( char near *, double near * )
+0002:00000c74  int (near * near __EFG_cnvd2f)( double near *, float near * )
+0002:00000c78  void (near * near __EFG_LDcvt)( __6ks9tmlong_double near *, cvt_info near *, char near * )
+0002:00000c7c  char near * (near * near __EFG_fcvt)( double, int, int near *, int near * )
+0002:00000c80  void (near * near __EFG__FDLD)( double near *, __6ks9tmlong_double near * )
+Module: c:\lang\watcom10\.\lib386\math387s.lib(cnvs2d)
+0001:000150d0  __cnvs2d
+Module: c:\lang\watcom10\.\lib386\math387s.lib(cnvd2f)
+0001:000150fc  __cnvd2f
+Module: c:\lang\watcom10\.\lib386\math387s.lib(ldcvt)
+0001:00015267  _LDScale10x
+0001:00015816  __LDcvt
+Module: c:\lang\watcom10\.\lib386\math387s.lib(_i_fcvt_)
+0001:00015cb0  _fcvt
+Module: c:\lang\watcom10\.\lib386\math387s.lib(cnvd2ld)
+0001:00015cb5  __cnvd2ld
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(dosinite)
+0001:00015cc4  __sys_init_387_emulator
+0001:00015df4  __sys_fini_387_emulator
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(chk8087)
+0001:00015ed0* _fpreset
+0001:00015ef0+ __init_8087
+0001:00015f30+ __default_sigfpe_handler
+0001:00015f50  __chk8087
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(nmemneed)
+0001:00015fc0  __nmemneed
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(mem)
+0001:00015fd0  __MemAllocator
+0001:00016080  __MemFree
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(grownear)
+0001:00016230+ __FreeDPMIBlocks
+0001:000162a0  __ReAllocDPMIBlock
+0001:00016460+ __LastFree
+0001:000166e0  __ExpandDGROUP
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(nmsize)
+0001:00016840* _msize
+0001:00016850  _nmsize
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(nexpand)
+0001:00016860* _expand
+0001:00016880+ __HeapManager_expand
+0001:00016a40  _nexpand
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(alphabet)
+0002:000008f4  __Alphabet
+Module: c:\lang\watcom10\.\lib386\plib3s.lib(stabmod)
+0001:00016ac0  __wcpp_4_module_dtor_
+0001:00016af4  __wcpp_4_mod_register_
+Module: c:\lang\watcom10\.\lib386\plib3s.lib(fatalerr)
+0001:00016b10  __wcpp_4_fatal_runtime_error_
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(comtflag)
+0002:00000d78  _commode
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(iob)
+0002:00000d7c  __iob
+0002:00000f84  _fmode
+0002:0009b98c  __OpenStreams
+0002:0009b990  __ClosedStreams
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(seterrno)
+0001:00016b44  __set_errno
+0001:00016b53* __set_EDOM
+0001:00016b5f  __set_ERANGE
+0001:00016b6b* __set_EINVAL
+0001:00016b7c  __set_doserrno
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(tolower)
+0001:00016b90  tolower
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(open)
+0001:00016e30* open
+0001:00016e50  sopen
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(fseek)
+0001:00016ed0  fseek
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(chktty)
+0001:00017010  __chktty
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(freefp)
+0001:00017050  __freefp
+0001:00017090  __purgefp
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(allocfp)
+0001:000170c0  __allocfp
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(qread)
+0001:00017170  __qread
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(ioalloc)
+0001:000171a0  __ioalloc
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(fgetc)
+0001:00017240  __fill_buffer
+0001:00017320+ __filbuf
+0001:00017350* fgetc
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(lseekdos)
+0001:000173f0  __lseek
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(_clse)
+0001:00017450  __close
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(flush)
+0001:000174a0  __flush
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(qwrit)
+0001:000175a0  __qwrite
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(errno)
+0001:00017630  __get_errno_ptr
+0001:00017640  __get_doserrno_ptr
+0002:0009b994+ errno
+0002:0009b998+ _doserrno
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(fputc)
+0001:00017650  fputc
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(segread)
+0001:00017720  segread
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(intx386)
+0001:00017750  int386x
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(grcgas)
+0002:00000f88  _GrCGA_4
+0002:00000fd8  _GrCGA_6
+0002:00001028  _TextDevice
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(grhgcs)
+0002:00001084  _GrHGC_11
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(gregas)
+0001:00017bd4  _EGASet
+0001:00017bf7+ _EGASetEO
+0001:00017c1a  _EGAReset
+0001:00017cb9  _EGASetup80
+0002:000010dc  _GrEGA_13
+0002:0000112c  _GrEGA_14
+0002:0000117c  _GrEGA_15
+0002:000011cc  _GrEGA_16
+0002:0000121c+ _GrEGA_EO
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(grvgas)
+0002:0000126c  _GrVGA_17
+0002:000012bc  _GrVGA_18
+0002:0000130c  _GrVGA_19
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(grsvgas)
+0002:00001420  _GrSVGA_100
+0002:00001470  _GrSVGA_102
+0002:000014c0  _GrSVGA_103
+0002:00001510  _GrSVGA_104
+0002:00001560  _GrSVGA_105
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(globalr)
+0002:0009b99c  __ConfigBuffer
+0002:0009b9d8  __Screen
+0002:0009b9e4  __SetVGAPage
+0002:0009b9e8  __TextPos
+0002:0009b9ec  __DBCSPairs
+0002:0009b9f6  __VGAStride
+0002:0009b9f8  __SVGAType
+0002:0009b9fa  __StackSeg
+0002:0009b9fc  __DefMode
+0002:0009b9fe  __DefTextRows
+0002:0009ba00  __CursorShape
+0002:0009ba02  __Tx_Col_Min
+0002:000015b0  __StartUp
+0002:000015b1  __GrMode
+0002:000015b2  __ErrorStatus
+0002:000015b4  __CurrPos
+0002:000015b8  __LogOrg
+0002:000015bc  __Clipping
+0002:000015bd  __CharAttr
+0002:000015be  __Wrap
+0002:000015c0  __CursState
+0002:000015c2  __GrCursor
+0002:000015c4  __CurrActivePage
+0002:000015c6  __CurrVisualPage
+0002:000015c8  __CurrBkColor
+0002:000015cc  __CurrColor
+0002:000015ce* __Palette
+0002:000015d0  __FillMask
+0002:000015d8  __DefMask
+0002:000015e0  __HaveMask
+0002:000015e1  __Transparent
+0002:000015e3  __PaRf_x
+0002:000015e5  __PaRf_y
+0002:000015e7  __LineStyle
+0002:000015e9  __StyleWrap
+0002:000015eb  __PlotAct
+0002:000015ed  __TextSettings
+0002:000015fd* __CurrFont
+0002:00001601* __ArcInfo
+0002:00001621  __CurrPos_w
+0002:00001631  __Window
+0002:00001643  __BiosSeg
+0002:00001645  __MonoSeg
+0002:00001647  __CgaSeg
+0002:00001649  __EgaSeg
+0002:0000164b  __RomSeg
+0002:0000164d  __BiosOff
+0002:00001651  __MonoOff
+0002:00001655  __CgaOff
+0002:00001659  __EgaOff
+0002:0000165d  __RomOff
+0002:00001661* __CurrState
+0002:0009ba04  __Tx_Row_Max
+0002:0009ba06  __Tx_Col_Max
+0002:0009ba08  __Tx_Row_Min
+0002:0009ba0a  __IsDBCS
+0002:0009ba0b  __VGAPage
+0002:0009ba0c  __VGAGran
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(setchsizs)
+0001:000186a0  _setcharsize
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(settxtors)
+0001:000186c3  _settextorient
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(settxpths)
+0001:000186f3  _settextpath
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(setchspcs)
+0001:00018701  _setcharspacing
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(settxtals)
+0001:0001870f  _settextalign
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(clips)
+0001:00018726  _setclip
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(getconfs)
+0001:0001879e* _getvideoconfig
+0001:000187c0  _CalcNumPages
+0001:0001882a  _GetState
+0001:0001893e  _InitState
+0001:000189bb  _GrInit
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(devutilss)
+0001:00018a37  _GraphMode
+0001:00018a5a* _GrProlog
+0001:00018a84* _GrEpilog
+0001:00018a93  _InitDevice
+0001:00018aa7  _FiniDevice
+0001:00018ab0  _StartDevice
+0001:00018ab9  _ResetDevice
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(setrowss)
+0001:00018d0d  _SetRows
+0001:00019004* _settextrows
+0001:00019021* _setvideomoderows
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(sysmtypes)
+0001:00019050  _SysMonType
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(remappals)
+0001:000192db  _remappalette
+0001:00019338  _RemapNum
+0001:0001937f* _remapallpalette
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(cnvcolors)
+0001:00019503  _CnvColour
+0002:000016c4  _VGA_Colours
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(cinit)
+0001:00019530  __CommonInit
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(___argc)
+0002:0009ba10  ___Argc
+0002:0009ba14  ___Argv
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(exit)
+0001:00019587+ __null_int23_exit
+0001:00019589  exit
+0001:000195b5* _exit
+0002:00001704+ __int23_exit
+0002:00001708  __FPE_handler_exit
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(sgdef086)
+0002:000024d4  _Start_XI
+0002:00002516  _End_XI
+0002:00002516  _Start_YI
+0002:00002534  _End_YI
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(noefgfmt)
+0002:0000170c  __EFG_printf
+0002:00001710  __EFG_scanf
+Module: c:\lang\watcom10\.\lib386\math387s.lib(efgfmt)
+0001:000195e0  _EFG_Format
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(xmsg)
+0001:00019760  __exit_with_msg
+0001:00019770  __fatal_runtime_error
+Module: c:\lang\watcom10\.\lib386\math387s.lib(strtod)
+0001:00019ce1+ __Strtold
+0001:00019e55  strtod
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(memset)
+0001:00019fc0  memset
+Module: c:\lang\watcom10\.\lib386\math387s.lib(ldclass)
+0001:00019fe0  __LDClass
+0001:0001a02e* _FLClass
+Module: c:\lang\watcom10\.\lib386\math387s.lib(efcvt)
+0001:0001a076* ecvt
+0001:0001a0b2  fcvt
+Module: c:\lang\watcom10\.\lib386\dos\emu387.lib(emu387)
+0001:0001a4b4  __int7_pl3
+0001:0001a4d8* __int7_X32VM
+0001:0001a524  __int7
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(hook387)
+0001:0001d660  __hook387
+0001:0001d710  __unhook387
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(8087cw)
+0002:00001798  __8087cw
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(save8087)
+0002:0000179c  __Save8087
+0002:000017a0  __Rest8087
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(init8087)
+0001:0001d754  __x87id
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(grabfp87)
+0001:0001d790  __GrabFP87
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(heapen)
+0002:000017a4  __heap_enabled
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(minreal)
+0002:0009ba98  __minreal
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(amblksiz)
+0002:000017a8  _amblksiz
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(sbrk386)
+0001:0001d800* sbrk
+0001:0001d8d0  __brk
+Module: c:\lang\watcom10\.\lib386\plib3s.lib(prwdata)
+0002:0009ba9c* _wint_pure_error_flag
+0002:0009ba9e* _wint_undef_vfun_flag
+0002:0009baa0  _wint_module_init
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(enterdb)
+0001:0001d9e0  __EnterWVIDEO
+0002:000017ac+ __WD_Present
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(initfile)
+0001:0001da10  __InitFiles
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(ioexit)
+0001:0001db20* fcloseall
+0001:0001db30  __full_io_exit
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(iomode)
+0001:0001db40  __GetIOMode
+0001:0001db60  __SetIOMode_nogrow
+0002:000017b0  __NFiles
+0002:000017b4  __init_mode
+0002:00001804  __io_mode
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(isatt)
+0001:0001db80  isatty
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(umaskval)
+0002:00001808  __umaskval
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(stiomode)
+0001:0001dba0+ __grow_iomode
+0001:0001dc60+ __shrink_iomode
+0001:0001dc90  __SetIOMode
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(dosret)
+0001:0001dd10+ _dosretax
+0001:0001dd30* _dosret0
+0001:0001dd50  __set_errno_dos
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(lseek)
+0001:0001ddd0  lseek
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(tell)
+0001:0001de10  tell
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(flushall)
+0001:0001de30  __flushall
+0001:0001de70* flushall
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(gtche)
+0001:0001de80  getche
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(fsync)
+0001:0001dea0  fsync
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(int386xa)
+0001:0001deb0  __int386x_
+0001:0001df0c* _DoINTR_
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(cgautils)
+0001:0001e299  _CoRep_
+0001:0001e28b  _CoXor_
+0001:0001e290  _CoAnd_
+0001:0001e2a5  _CoOr_
+0001:0001e2ce  _MoveUp_
+0001:0001e2ee  _MoveDown_
+0001:0001e2c5  _Move1Left_
+0001:0001e2bc  _Move2Left_
+0001:0001e2b3  _Move1Right_
+0001:0001e2aa  _Move2Right_
+0001:0001e30d  _Get1Dot_
+0001:0001e31c  _Get2Dot_
+0001:0001e383  _Pix1Zap_
+0001:0001e42b  _Pix2Zap_
+0001:0001e393  _Pix1Fill_
+0001:0001e443  _Pix2Fill_
+0001:0001e32d  _Pix1Copy_
+0001:0001e32b  _Pix2Copy_
+0001:0001e346  _Pix1Read_
+0001:0001e344  _Pix2Read_
+0001:0001e51e  _CGAScanLeft_
+0001:0001e54a  _CGAScan1Right_
+0001:0001e5a0  _CGAScan2Right_
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(setmodes)
+0001:0001e5fb+ _ValidMode
+0001:0001e644  _SetMode
+0002:00001868+ _NoClear
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(hgcutils)
+0001:0001e6bf  _HercMoveUp_
+0001:0001e6d1  _HercMoveDown_
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(egautils)
+0001:0001e6e7  _EGAMoveUpHi_
+0001:0001e6f1  _EGAMoveUpLo_
+0001:0001e6ec  _EGAMoveDownHi_
+0001:0001e6f6  _EGAMoveDownLo_
+0001:0001e6fb  _EGAMoveLeft_
+0001:0001e702  _EGAMoveRight_
+0001:0001e709  _EGARep_
+0001:0001e738  _EGAGetDot_
+0001:0001e726  _EGAGetDotEO_
+0001:0001e71e  _EGAGetDotMono_
+0001:0001e99d  _EGAZap_
+0001:0001e996  _EGAZapEO_
+0001:0001e996  _EGAZapMono_
+0001:0001ea10  _EGAFill_
+0001:0001ea07  _EGAFillEO_
+0001:0001ea07  _EGAFillMono_
+0001:0001e7e5  _EGAPixCopy_
+0001:0001e766  _EGAPixCopyEO_
+0001:0001e7ce  _EGAPixCopyMono_
+0001:0001e93e  _EGAReadRow_
+0001:0001e8ea  _EGAReadRowEO_
+0001:0001e926  _EGAReadRowMono_
+0001:0001eb0f  _EGAScanLeft_
+0001:0001eac0  _EGAScanLeftEO_
+0001:0001eb0b  _EGAScanLeftMono_
+0001:0001ebc2  _EGAScanRight_
+0001:0001eb4c  _EGAScanRightEO_
+0001:0001ebbe  _EGAScanRightMono_
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(vgautils)
+0001:0001ec39  _MoveUp19_
+0001:0001ec41  _MoveDown19_
+0001:0001ec49  _MoveLeft19_
+0001:0001ec4c  _MoveRight19_
+0001:0001ec34  _Rep19_
+0001:0001ec2f  _And19_
+0001:0001ec64  _Zap19_
+0001:0001ec4e  _GetDot19_
+0001:0001ec82  _Fill19_
+0001:0001ecc4  _PixCopy19_
+0001:0001ecf3  _PixRead19_
+0001:0001ecfd  _ScanLeft19_
+0001:0001ed20  _ScanRight19_
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(svgautil)
+0001:0001ef55  _MoveUp100_
+0001:0001ef5a  _MoveDown100_
+0001:0001ef5f  _MoveUp128_
+0001:0001ef78  _MoveDown128_
+0001:0001ef91  _MoveLeft256_
+0001:0001efa9  _MoveRight256_
+0001:0001efc1  _MoveUp640_
+0001:0001efdd  _MoveDown640_
+0001:0001eff9  _MoveUp800_
+0001:0001f015  _MoveDown800_
+0001:0001f031  _MoveUp1024_
+0001:0001f04d  _MoveDown1024_
+0001:0001f068  _Zap256_
+0001:0001f099  _Fill256_
+0001:0001f0d1  _PixCopy256_
+0001:0001f109  _PixRead256_
+0001:0001f13f  _ScanLeft256_
+0001:0001f16d  _ScanRight256_
+0001:0001ed36  _PageVESA_
+0001:0001ed6b  _PageVideo7_
+0001:0001ede6  _PageParadise_
+0001:0001ee0a  _PageATI_
+0001:0001ee37  _PageTseng3_
+0001:0001ee5a  _PageTseng4_
+0001:0001ee7d  _PageOak_
+0001:0001eea0  _PageTrident_
+0001:0001eec6  _PageChips_
+0001:0001eef4  _PageGenoa_
+0001:0001ef21  _PageS3_
+0001:0001ede6  _PageCirrus_
+0001:0001ee5a  _PageViper_
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(fast256s)
+0001:0001f19b  _FastMap
+0001:0001f23e  _RMAlloc
+0001:0001f2da  _RMFree
+0001:0001f308  _RMInterrupt
+0001:0001f3b8  _RMInterrupt2
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(svgainfos)
+0001:0001f4c9  _SuperVGAType
+0001:0001f850* _SetSVGAType
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(std)
+0002:0000186c  __StdFont
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(windfuncs)
+0001:0001f85e+ _WtoPhysX
+0001:0001f8a8+ _WtoPhysY
+0001:0001f90a* _WtoScaleX
+0001:0001f941* _WtoScaleY
+0001:0001f978* _getwindowcoord
+0001:0001faab+ _getviewcoord_w
+0001:0001faf6* _getviewcoord_w_87
+0001:0001fb0f* _getviewcoord_wxy
+0001:0001fb2a* _getcurrentposition_w
+0001:0001fb4b  _resetscalefactor
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(seginits)
+0001:0001fbef  _InitSegments
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(cursors)
+0001:0001fcfc  _CursorOn
+0001:0001fd2a  _CursorOff
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(dpmihost)
+0001:0001fe60  __DPMI_hosted
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(istable)
+0002:00000a20  _IsTable
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(bufld386)
+0001:0001fef4  __ZBuf2LD
+Module: c:\lang\watcom10\.\lib386\math387s.lib(inf_nan)
+0001:0001ff97* __f_infinity
+0001:0001ff9b* __f_posqnan
+0001:0001ff9f  __d_infinity
+0001:0001ffa7  __d_posqnan
+0001:0001ffaf* __ld_infinity
+0001:0001ffb7* __ld_posqnan
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(hugeval)
+0002:00000b24  _HugeValue
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(__stos)
+0001:0001ffc0  __STOSB
+0001:0001fff7* __STOSD
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(cvtbuf)
+0001:00020070  __CVTBuffer
+Module: c:\lang\watcom10\.\lib386\math387s.lib(cvt)
+0001:00020076  __cvt
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(fpexcept)
+0001:00020100  __FPE_exception_
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(fpe387)
+0002:00002298  __PMSeg
+0002:0000229a  __PMAddr
+0002:0000229e  __RMAddr
+0001:0002010c  __Init_FPE_handler
+0001:00020144  __Fini_FPE_handler
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(fpeinth)
+0001:00020180  __FPEHandler_
+0001:00020180  __FPEHandlerStart_
+0001:0002018d  __FPE2Handler_
+0001:0002028f  __FPEHandlerEnd_
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(iomodtty)
+0001:000203d0  __ChkTTYIOMode
+0001:00020420* __IOMode
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(dosfile)
+0001:0002043c* _dos_close
+0001:0002044f  _dos_commit
+0001:00020463* _dos_open
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(bit)
+0001:0002050b  BitReplace
+0001:00020522  BitAnd
+0001:00020550  BitXor
+0001:00020539  BitOr
+0001:00020567  BitCopy
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(fdfs386)
+0001:00020604  _GR__FDFS
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(grmath)
+0001:0002065a  _GR__FSA
+0001:00020650  _GR__FSS
+0001:00020707  _GR__FSM
+0001:0002077a  _GR__FSD
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(fsi4386)
+0001:000207f8  _GR__FSI4
+0001:00020802* _GR__FSU4
+0001:0002080c* _GR__FSI2
+0001:00020816* _GR__FSU2
+0001:00020820* _GR__FSI1
+0001:0002082a* _GR__FSU1
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(i4fs386)
+0001:000208a7  _GR__I4FS
+0001:0002087c* _GR__U4FS
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(fsfd386)
+0001:000208b8  _GR__FSFD
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(plotactns)
+0001:00020933+ _getplotaction
+0001:00020962  _setplotaction
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(l1lines)
+0001:000209bb  _L1SLine
+0001:00020a06* _L1Line
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(colors)
+0001:00020b7a* _getcolor
+0001:00020b81  _setcolor
+0001:00020ba4+ _L2setcolor
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(fpephar)
+0001:00020bc8  __Phar_hook_init_
+0001:00020c8e  __Phar_hook_fini_
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(fpedos4g)
+0001:00020cbc  __DOS4G_hook_init_
+0001:00020cea  __DOS4G_hook_fini_
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(doserror)
+0001:00020d04  __doserror_
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(dummyr)
+0001:00020d17  _GRF4UnderFlow
+0001:00020d1a  _GRF4DivZero
+0001:00020d25  _GRF4OverFlow
+0002:0009bae0* _GR_fltused_
+0002:0009bae2* _GR_small_code_
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(l1clips)
+0001:00020d30+ _L1OutCode
+0001:00020de1  _L0LineClip
+0001:00020f83* _L0BlockClip
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(l0drwlins)
+0001:00021010  _L0DrawLine
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(fpeint)
+0002:000024c8  __FPE_int
+0002:000024c9  __IRQ_num
+0002:000024ca+ __IRQ_int
+0002:000024cb  __MST_pic
+0002:000024cc+ __SLV_pic
+Module: c:\lang\watcom10\.\lib386\dos\graph.lib(gstklows)
+0001:00021223  _GetStackLow
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(nonibm)
+0001:00021230+ __is_nonIBM
+0002:000024d0  __NonIBM
+Module: c:\lang\watcom10\.\lib386\dos\clib3s.lib(inirmsel)
+0002:0009bae4  _ExtenderRealModeSelector
+
+
+                        +----------------------+
+                        |   Imported Symbols   |
+                        +----------------------+
+
+Symbol                              Module
+======                              ======
+
+
+
+                        +--------------------+
+                        |   Libraries Used   |
+                        +--------------------+
+
+c:\lang\watcom10\.\lib386\dos\graph.lib
+c:\lang\watcom10\.\lib386\dos\clib3s.lib
+c:\lang\watcom10\.\lib386\plib3s.lib
+c:\lang\watcom10\.\lib386\math387s.lib
+c:\lang\watcom10\.\lib386\dos\emu387.lib
+
+
+                        +-----------------------+
+                        |   Linker Statistics   |
+                        +-----------------------+
+
+Stack size:  00010000 (65536.)
+Memory size:  000cce83 (839299.)
+Entry point address: 0001:000138b8
+Link time: 00:01.48

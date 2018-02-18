@@ -1,28 +1,11 @@
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
-//Класс обработки экрана.                                           //
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
-class Screen
-{
- public:
-  unsigned char *Buffer;
-  unsigned char Pal[800];
-  void InitVga(void);
-  void CloseVga(void);
-  void ClearWindow(void);
-  void Clear(void);
-  void ViewWindow(void);
-  void ViewBar(void);
-  void View(void);
-  void SetRGB_DAC(float dr,float dg,float db);
-  void LoadPalette(char *filename);
-  int PutSymbol(int x,int y,char symbol,int type);
-  void Print(int x,int y,char *Text);
-  void PrintToScreen(int x,int y,char *Text);
-};
+#include "video.h"
+
+CVideo cVideo;
+
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 //Инициализирует видеорежим.                                        //
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
-void Screen::InitVga(void)
+void CVideo::InitVga(void)
 {
  Buffer=(unsigned char *)malloc(64000);
  _setvideomode(_MRES256COLOR);
@@ -30,7 +13,7 @@ void Screen::InitVga(void)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 //Восстанавливает текстовый режим.                                  //
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
-void Screen::CloseVga(void)
+void CVideo::CloseVga(void)
 {
  free(Buffer);
  _setvideomode(_TEXTC80);
@@ -38,7 +21,7 @@ void Screen::CloseVga(void)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 //Очищает окно в буффере.                                           //
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
-void Screen::ClearWindow(void)
+void CVideo::ClearWindow(void)
 {
  unsigned char *dpt=Buffer;
  *(dpt)=0;
@@ -58,7 +41,7 @@ void Screen::ClearWindow(void)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 //Очищает буффер.                                                   //
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
-void Screen::Clear(void)
+void CVideo::Clear(void)
 {
  unsigned char *dpt=Buffer;
  *(dpt)=0;
@@ -78,7 +61,7 @@ void Screen::Clear(void)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 //Делает видимым окно на экране.                                    //
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
-void Screen::ViewWindow(void)
+void CVideo::ViewWindow(void)
 {
  unsigned char *dpt=Buffer;
  #pragma aux putwindow parm[]=\
@@ -93,7 +76,7 @@ void Screen::ViewWindow(void)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 //Делает видимым статус панель на экране                            //
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
-void Screen::ViewBar(void)
+void CVideo::ViewBar(void)
 {
  unsigned char *dpt=Buffer+53760;
  #pragma aux putbar parm[]=\
@@ -109,7 +92,7 @@ void Screen::ViewBar(void)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 //Делает видимым весь буффер на экране.                             //
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
-void Screen::View(void)
+void CVideo::View(void)
 {
  unsigned char *dpt=Buffer;
  #pragma aux putscreen parm[]=\
@@ -121,7 +104,7 @@ void Screen::View(void)
  modify [esi edi ecx eax];
  putscreen();
 }
-void Screen::SetRGB_DAC(float dr,float dg,float db)
+void CVideo::SetRGB_DAC(float dr,float dg,float db)
 {
  outp(0x3c8,0);
  for(register int n=0;n<256;n++)
@@ -134,7 +117,7 @@ void Screen::SetRGB_DAC(float dr,float dg,float db)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 //Загрузка палитры с именем filename.                               //
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
-void Screen::LoadPalette(char *filename)
+void CVideo::LoadPalette(char *filename)
 {
  FILE *in;
  unsigned char r,g,b;
@@ -155,11 +138,11 @@ void Screen::LoadPalette(char *filename)
    SetRGB_DAC(1,1,1);
   }
 }
-int Screen::PutSymbol(int x,int y,char symbol,int type)
+int CVideo::PutSymbol(int x,int y,char symbol,int type)
 {
  int sprite=-1;
- char *wdp=Data.Font;
-//Data.Font
+ char *wdp=sData.Font;
+//sData.Font
  if (symbol>='0' && symbol<='9') sprite=symbol-48;
  if (symbol>='A' && symbol<='Z') sprite=10+symbol-65;
  if (symbol==' ') return(5);
@@ -193,7 +176,7 @@ int Screen::PutSymbol(int x,int y,char symbol,int type)
    }
  return(len);
 }
-void Screen::Print(int x,int y,char *Text)
+void CVideo::Print(int x,int y,char *Text)
 {
  int n;
  unsigned char s;
@@ -203,7 +186,7 @@ void Screen::Print(int x,int y,char *Text)
    x+=PutSymbol(x,y,s,1);
   }
 }
-void Screen::PrintToScreen(int x,int y,char *Text)
+void CVideo::PrintToCVideo(int x,int y,char *Text)
 {
  int n;
  unsigned char s;

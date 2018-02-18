@@ -1,0 +1,17 @@
+NAME    doom4
+OPTION  quiet, eliminate, map, show
+DEBUG   all
+FILE    main.obj
+FILE    common.obj
+FILE    3dengine.obj
+FILE    automap.obj
+FILE    classes.obj
+FILE    control.obj
+FILE    keyboard.obj
+FILE    loading.obj
+FILE    menu.obj
+FILE    mouse.obj
+FILE    special.obj
+FILE    sprites.obj
+FILE    timer.obj
+FILE    video.obj

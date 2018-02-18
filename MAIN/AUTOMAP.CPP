@@ -1,6 +1,5 @@
-void Line(int x1,int y1,int x2,int y2,char color);
-void putpixel(int x,int y,char color);
-void PutAutoMap(void);
+#include "automap.h"
+
 //============================================================================
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 //Рисует линию x1,y1-x2,y2 цвета color.                             //
@@ -59,7 +58,7 @@ void putpixel(int x,int y,char color)
  if (y<0) return;
  if (x>319) return;
  if (y>167) return;
- *(Video.Buffer+x+y*320)=color;
+ *(cVideo.Buffer+x+y*320)=color;
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 //Обеспечивает вывод карты.                                         //
@@ -68,20 +67,20 @@ void PutAutoMap(void)
 {
  int n,m;
  int x1,y1,x2,y2;
- for(n=0;n<Info.SegmentNumber;n++)
+ for(n=0;n<sInfo.SegmentNumber;n++)
   {
-   x1=Segment[n].X1-Player.X;
-   y1=Segment[n].Y1-Player.Y;
-   x2=Segment[n].X2-Player.X;
-   y2=Segment[n].Y2-Player.Y;
-   if (Segment[n].Visible==1)
+   x1=sSegment[n].X1-sPlayer.X;
+   y1=sSegment[n].Y1-sPlayer.Y;
+   x2=sSegment[n].X2-sPlayer.X;
+   y2=sSegment[n].Y2-sPlayer.Y;
+   if (sSegment[n].Visible==1)
     {
-     if (Segment[n].Frontier!=0)
+     if (sSegment[n].Frontier!=0)
       {
-       int up1=Sector[Segment[n].Sector1].Up;
-       int up2=Sector[Segment[n].Sector2].Up;
-       int down1=Sector[Segment[n].Sector1].Down;
-       int down2=Sector[Segment[n].Sector2].Down;
+       int up1=sSector[sSegment[n].Sector1].Up;
+       int up2=sSector[sSegment[n].Sector2].Up;
+       int down1=sSector[sSegment[n].Sector1].Down;
+       int down2=sSector[sSegment[n].Sector2].Down;
        if (up1==up2 && down1==down2) continue;
        Line(x1/20+160,84-y1/20,x2/20+160,84-y2/20,161);
       }
@@ -89,7 +88,7 @@ void PutAutoMap(void)
 
     }
   }
- int a=360-Player.Angle;
+ int a=360-sPlayer.Angle;
  if (a<0) a+=360;
  Line(160,84,160-5*SinTable[a],84-5*CosTable[a],232);
 }

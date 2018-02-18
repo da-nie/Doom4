@@ -1,8 +1,4 @@
-//===========================спецэфекты=======================================
-void RunningScreen(void);
-void LightingPlus(void);
-void LightingMinus(void);
-int rnd(int max);
+#include "special.h"
 //============================================================================
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 //Стекание экрана.                                                  //
@@ -31,9 +27,9 @@ void RunningScreen(void)
      for(int z=199;z>y1+dy;z--)
       for(int x=m*4;x<m*4+4;x++)
        *(vpt+z*320+x)=*(vpt+(z-dy)*320+x);
-     for(z=y1;z<=y2;z++)
+     for(int z=y1;z<=y2;z++)
       for(int x=m*4;x<m*4+4;x++)
-       *(vpt+z*320+x)=*(Video.Buffer+z*320+x);
+       *(vpt+z*320+x)=*(cVideo.Buffer+z*320+x);
      if (y[m]<199) y[m]=y[m]+dy;
      if (y[m]>199) y[m]=199;
      if (y[m]==199) k++;
@@ -53,7 +49,7 @@ void LightingPlus(void)
   {
    while (TimerUser==oldtimer);
    oldtimer=TimerUser;
-   Video.SetRGB_DAC(r,r,r);
+   cVideo.SetRGB_DAC(r,r,r);
   }
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
@@ -67,7 +63,7 @@ void LightingMinus(void)
   {
    while (TimerUser==oldtimer);
    oldtimer=TimerUser;
-   Video.SetRGB_DAC(r,r,r);
+   cVideo.SetRGB_DAC(r,r,r);
   }
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//

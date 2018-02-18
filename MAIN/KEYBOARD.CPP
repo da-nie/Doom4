@@ -1,20 +1,12 @@
+#include "keyboard.h"
+
 char KeyTable[255];//таблица состояния клавиш
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
-//Класс обработки клавиатуры.                                       //
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
-class Keyboard
-{
- public:
-  void (__interrupt __far *inter)();
-  static void interrupt NewKeyboard();
-  Keyboard();
-  ~Keyboard();
-  char GetPressKey(unsigned char key);
-};
+
+CKeyboard cKeyboard;
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 //Новый обработчик клавиатуры.                                      //
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
-void interrupt Keyboard::NewKeyboard()
+void interrupt CKeyboard::NewCKeyboard()
 {
  unsigned char ScanCode=inp(0x60)&127;
  unsigned char type=inp(0x60)&128;
@@ -28,24 +20,24 @@ void interrupt Keyboard::NewKeyboard()
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 //Конструктор класса обработки клавиатуры.                          //
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
-Keyboard::Keyboard()
+CKeyboard::CKeyboard()
 {
  short n;
  for(n=0;n<255;n++) KeyTable[n]=0;
  inter=_dos_getvect(9);
- _dos_setvect(9,NewKeyboard);
+ _dos_setvect(9,NewCKeyboard);
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 //Деструктор класса обработки клавиатуры.                           //
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
-Keyboard::~Keyboard()
+CKeyboard::~CKeyboard()
 {
  _dos_setvect(9,inter);
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 //Возвращает состояние клавиши с номером key.0-не нажата.           //
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
-char Keyboard::GetPressKey(unsigned char key)
+char CKeyboard::GetPressKey(unsigned char key)
 {
  return(KeyTable[key]);
 }
